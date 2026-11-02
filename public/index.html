@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fdf3f1">
+  <meta name="description" content="Bin Imran - beautiful ladies suits. Lawn, cotton, embroidered, formal and winter wear. Cash on delivery and easy WhatsApp ordering.">
+  <title>Bin Imran – Suits for Ladies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="head-wrap">
+    <header class="header">
+      <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h12M3 17h18"/></svg></button>
+      <a href="#/" class="logo"><b>Bin Imran</b><small>Ladies Clothing</small></a>
+      <nav class="actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+        <a class="icon-btn" href="#/wishlist" aria-label="Wishlist"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/></svg><em id="wishCount" hidden>0</em></a>
+        <a class="icon-btn" href="#/account" aria-label="Account"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.600-6 8-6s8 2 8 6"/></svg></a>
+        <a class="icon-btn" href="#/cart" aria-label="Cart"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><em id="cartCount" hidden>0</em></a>
+      </nav>
+    </header>
+    <nav class="catbar" id="catbar" aria-label="Categories"></nav>
+    <form class="searchbar" id="searchForm">
+      <input id="searchInput" type="search" placeholder="Search suits, lawn, cotton, formal..." aria-label="Search suits">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+
+  <!-- Slide-in menu -->
+  <div class="drawer-bg" id="drawerBg"></div>
+  <aside class="drawer" id="drawer" aria-label="Menu">
+    <div class="drawer-head"><span class="dlogo">Bin Imran</span><button class="icon-btn" id="drawerClose" aria-label="Close menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <a class="dlink" href="#/">Home</a>
+    <a class="dlink" href="#/shop">All Suits</a>
+    <nav class="menu" id="menu">
+      <a href="#/shop/Lawn">Lawn</a><a href="#/shop/Cotton">Cotton</a><a href="#/shop/Embroidered">Embroidered</a><a href="#/shop/Formal">Formal</a><a href="#/shop/Winter">Winter</a><a href="#/shop/new">New In</a><a href="#/shop/sale" class="hot">Sale</a>
+    </nav>
+    <a class="dlink" href="#/help">Help &amp; Size Guide</a>
+  </aside>
+
+  <!-- Page content is drawn here by app.js -->
+  <main id="app"></main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="foot-grid">
+      <div>
+        <a href="#/" class="logo"><b>Bin Imran</b><small>Ladies Clothing</small></a>
+        <p>Beautiful, comfortable suits for ladies, from everyday lawn to festive wear. Easy ordering on WhatsApp.</p>
+      </div>
+      <div>
+        <h5>Shop</h5>
+        <a href="#/shop/Lawn">Lawn</a><a href="#/shop/Cotton">Cotton</a><a href="#/shop/Embroidered">Embroidered</a><a href="#/shop/Formal">Formal</a><a href="#/shop/Winter">Winter</a>
+      </div>
+      <div>
+        <h5>Help</h5>
+        <a href="#/help">Track Order</a><a href="#/help">Exchange Policy</a><a href="#/help">Size Guide</a><a href="#/help">FAQs</a><a href="#/help">Contact Us</a>
+      </div>
+      <div>
+        <h5>Contact Us</h5>
+        <p id="fEmail"></p><p id="fPhone"></p><p id="fAddress"></p><div class="soc" id="fSocial"></div>
+        <h5 style="margin-top:14px">Payment</h5>
+        <p id="fPay">💵 Cash on Delivery</p>
+      </div>
+    </div>
+    <div class="copy">© <span id="fYear"></span> Bin Imran. All rights reserved. · <a href="#/help">Privacy Policy</a> | <a href="#/help">Terms &amp; Conditions</a></div>
+  </footer>
+
+  <!-- Floating WhatsApp button -->
+  <a class="wa-float" id="waFloat" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2zm0 1.8a8.1 8.1 0 0 1 0 16.2 8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.1.82.83-3.02-.2-.31A8.1 8.1 0 0 1 12.04 3.8zm-3.2 4.1c-.2 0-.5.07-.77.37-.26.3-1 .98-1 2.4s1.03 2.78 1.17 2.97c.15.2 2 3.2 4.95 4.36 2.45.96 2.95.77 3.48.72.53-.05 1.7-.7 1.94-1.37.24-.68.24-1.26.17-1.38-.07-.12-.27-.2-.56-.34-.3-.15-1.7-.84-1.97-.94-.27-.1-.46-.15-.66.15-.2.3-.76.94-.93 1.13-.17.2-.34.22-.63.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.5.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.18-.24-.57-.48-.5-.66-.5z"/></svg></a>
+  <div class="toast" id="toast"></div>
+
+  <script src="products.js"></script>
+  <script src="site.js"></script>
+  <script>Site.boot().then(()=>{const s=document.createElement('script');s.src='app.js';document.body.appendChild(s)});</script>
+</body>
+</html>

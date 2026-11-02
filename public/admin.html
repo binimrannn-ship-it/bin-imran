@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bin Imran – Admin Panel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap">
+<meta name="theme-color" content="#1a0813">
+<style>
+:root{--plum:#1a0813;--plum2:#2c0f23;--gold:#d9a24b;--gold-l:#f0c58a;--rose:#e3588f;--line:rgba(217,162,75,.28);--muted:rgba(255,255,255,.62)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#1a0813}
+body{font-family:Inter,Arial,sans-serif;background:linear-gradient(160deg,#1a0813,#2c0f23 55%,#1a0813) fixed;color:#fff;font-size:14px;min-height:100vh}
+.top{background:rgba(26,8,19,.92);border-bottom:1px solid var(--line);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+.top b{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:600;color:var(--gold-l)}
+.top a,.top button{color:var(--gold-l);font-size:13px;background:none;border:0;cursor:pointer;margin-left:14px;text-decoration:underline;font-family:inherit}
+.top a:hover,.top button:hover{color:#fff}
+.box{max-width:900px;margin:20px auto;padding:0 16px}
+.card{background:rgba(44,15,35,.62);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 14px 40px rgba(0,0,0,.3)}
+h2{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:21px;margin-bottom:12px;color:#fff}
+h2::after{content:"";display:block;width:40px;height:2px;margin-top:8px;background:linear-gradient(90deg,#d9a24b,#f6dd9a)}
+label{display:block;font-size:12px;color:var(--muted);margin:10px 0 4px}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:rgba(255,255,255,.08);color:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.4)}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,162,75,.18)}
+select option{background:#2c0f23;color:#fff}
+input[type=checkbox]{width:auto;accent-color:var(--gold)}
+input[type=file]{padding:8px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{background:linear-gradient(135deg,#b8326d,#e3588f);color:#fff;border:1px solid rgba(240,197,138,.55);padding:10px 20px;border-radius:30px;cursor:pointer;font-weight:600;font-family:inherit;margin-top:14px;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-2px);background:linear-gradient(135deg,#d9a24b,#f0c58a);color:#2a1020;box-shadow:0 10px 24px rgba(217,162,75,.3)}
+.btn.alt{background:transparent;color:var(--gold-l);border:1px solid var(--gold)}
+.btn.alt:hover{background:rgba(217,162,75,.18);color:#fff;box-shadow:none}
+.btn.del{background:#8f2a3a;border-color:rgba(255,255,255,.25)}
+.btn.del:hover{background:#b3364a;color:#fff;box-shadow:none}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{padding:8px 16px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:#fff;border-radius:30px;cursor:pointer;font-family:inherit;transition:.2s}
+.tabs button:hover{border-color:var(--gold)}
+.tabs button.on{background:var(--gold);border-color:var(--gold);color:#2a1020;font-weight:600}
+.item{display:flex;gap:12px;align-items:center;border-bottom:1px solid rgba(255,255,255,.12);padding:12px 0}
+.item img,.item .noimg{width:56px;height:56px;object-fit:cover;border-radius:8px;background:rgba(255,255,255,.1);flex-shrink:0;border:1px solid var(--line)}
+.item div.info{flex:1}
+.item small{color:var(--muted)}
+.item button{margin:0 0 0 6px;padding:6px 12px}
+.link-row{display:grid;grid-template-columns:1fr 2fr auto;gap:8px;margin-bottom:8px}
+.pcard{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0;background:rgba(255,255,255,.04)}
+#login{max-width:340px;margin:80px auto}
+.hide{display:none}
+#msg{position:fixed;bottom:16px;right:16px;background:var(--gold);color:#2a1020;font-weight:600;padding:10px 16px;border-radius:8px;opacity:0;transition:.3s;z-index:50}
+#msg.show{opacity:1}
+.preview{width:90px;height:90px;object-fit:cover;border-radius:8px;margin-top:8px;border:1px solid var(--line)}
+b{color:#fff}
+@media(max-width:600px){.row,.link-row{grid-template-columns:1fr}.top{flex-wrap:wrap;gap:6px}}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login" class="card">
+  <h2>Admin Login</h2>
+  <label for="pw">Password</label>
+  <input type="password" id="pw" autofocus>
+  <button class="btn" id="loginBtn">Login</button>
+  <p id="lerr" style="color:#ff9a9a;font-size:12px;margin-top:8px"></p>
+</div>
+
+<!-- Panel -->
+<div id="panel" class="hide">
+  <div class="top"><b>Bin Imran – Admin</b><span><a id="sheetTop" href="#" target="_blank" class="hide">📊 Orders Sheet</a><a href="index.html?preview=1" target="_blank">Preview my changes</a><button id="logout">Logout</button></span></div>
+  <div class="box">
+    <div class="tabs">
+      <button data-t="products" class="on">Products</button>
+      <button data-t="links">Menu Links</button>
+      <button data-t="contact">Contact Info</button>
+      <button data-t="pay">Payments</button>
+      <button data-t="social">Social &amp; WhatsApp</button>
+      <button data-t="hero">Hero Section</button>
+      <button data-t="theme">Theme Colours</button>
+      <button data-t="reviews">Reviews</button>
+      <button data-t="sheet">Orders Sheet</button>
+      <button data-t="backup">Save / Backup</button>
+    </div>
+
+    <section id="t-products">
+      <div class="card">
+        <h2 id="formTitle">Add New Product</h2>
+        <div class="row">
+          <div><label>Product name</label><input id="pName" placeholder="Floral Lawn Suit"></div>
+          <div><label>Original price (PKR)</label><input id="pPrice" type="number" min="0" placeholder="3499"></div>
+        </div>
+        <div class="row">
+          <div><label>Category</label>
+            <select id="pCat"><option>Lawn</option><option>Cotton</option><option>Embroidered</option><option>Formal</option><option>Winter</option></select></div>
+          <div><label>Product link (ab zaroorat nahi, khali chhorein)</label><input id="pLink" placeholder=""></div>
+        </div>
+        <div class="row"><div><label>Discount price (optional)</label><input id="pSale" type="number" min="0" placeholder="Khali = sale nahi"></div><div><label>&nbsp;</label><label style="display:flex;gap:8px;align-items:center;color:#fff"><input type="checkbox" id="pNew"> Show in “New In”</label></div></div>
+        <label>Description (optional)</label><textarea id="pDesc" rows="2" placeholder="Fabric, colour, size details..."></textarea>
+        <label>Product image (upload)</label>
+        <input type="file" id="pFile" accept="image/*">
+        <label>or image URL / file path (e.g. images/suit1.jpg)</label>
+        <input id="pUrl" placeholder="images/suit1.jpg">
+        <img id="pPrev" class="preview hide" alt="">
+        <button class="btn" id="saveProd">Add Product</button>
+        <button class="btn alt hide" id="cancelEdit">Cancel</button>
+      </div>
+      <div class="card"><h2>All Products (<span id="count">0</span>)</h2><div id="list"></div></div>
+    </section>
+
+    <section id="t-links" class="card hide">
+      <h2>Menu Links</h2>
+      <p style="color:var(--muted);font-size:12px">Change the names and URLs of the links in the top menu.</p>
+      <div id="navRows" style="margin-top:10px"></div>
+      <button class="btn alt" id="addNav">+ Add link</button>
+      <button class="btn" id="saveNav">Save Links</button>
+    </section>
+
+    <section id="t-contact" class="card hide">
+      <h2>Contact Info (shown in footer)</h2>
+      <label>Email</label><input id="cEmail">
+      <label>Phone</label><input id="cPhone">
+      <label>Address</label><textarea id="cAddr" rows="3"></textarea>
+      <button class="btn" id="saveContact">Save Contact</button>
+    </section>
+
+    <section id="t-pay" class="card hide">
+      <h2>Payment Methods</h2>
+      <p style="color:var(--muted);font-size:12px;line-height:1.6">Jo method "Show" par tick hoga wohi footer aur checkout mein nazar aaye ga. Account title aur number "Account details" mein likhein, customer ko checkout par dikhe ga.</p>
+      <div id="payList"></div>
+      <button class="btn alt" id="addPay">+ Add method</button> <button class="btn" id="savePay">Save</button>
+    </section>
+
+    <section id="t-social" class="card hide">
+      <h2>Social Media &amp; WhatsApp</h2>
+      <p style="color:var(--muted);font-size:12px">Jo link bharein ge wohi website ke footer mein icon ban kar nazar aaye ga. Khali chhorein to icon nahi dikhe ga.</p>
+      <label>Facebook page link</label><input id="sFb" placeholder="https://facebook.com/binimran">
+      <label>Instagram link</label><input id="sIg" placeholder="https://instagram.com/binimran">
+      <label>TikTok link</label><input id="sTt" placeholder="https://tiktok.com/@binimran">
+      <label>YouTube link</label><input id="sYt" placeholder="https://youtube.com/@binimran">
+      <label>WhatsApp number (khali chhorein to Contact Info wala phone use hoga)</label><input id="sWa" placeholder="03125632506">
+      <label>WhatsApp pehla message (customer jab button dabaye)</label><textarea id="sMsg" rows="2"></textarea>
+      <button class="btn" id="saveSocial">Save</button>
+    </section>
+
+    <section id="t-hero" class="card hide">
+      <h2>Hero Section (top banner)</h2>
+      <p style="color:var(--muted);font-size:12px;line-height:1.6">Yahan se top banner ka text, rang aur photo sab badal sakte hain. Koi box khali chhorein to default text/rang hi dikhe ga. Save karke <b>Preview my changes</b> se dekhein.</p>
+      <div class="row">
+        <div><label>Chhoti script line (pink)</label><input id="hL1" placeholder="Little Girls"></div>
+        <div><label>Bara title</label><input id="hL2" placeholder="Big Dreams"></div>
+      </div>
+      <label>Neeche ka text</label><textarea id="hSubT" rows="2" placeholder="Traditional styles, modern comfort, perfect for every occasion."></textarea>
+      <div class="row">
+        <div><label>Button text</label><input id="hBt" placeholder="Shop New Arrivals →"></div>
+        <div><label>Button link</label><input id="hBl" placeholder="#/shop"></div>
+      </div>
+      <h2 style="margin-top:22px;font-size:17px">Colors</h2>
+      <div id="hColors"></div>
+      <h2 style="margin-top:22px;font-size:17px">Photo</h2>
+      <label>Nayi photo upload karein</label><input type="file" id="hFile" accept="image/*">
+      <label>ya photo ka path / URL (e.g. images/hero.jpg)</label><input id="hPath" placeholder="Khali = maujooda photo">
+      <img id="hPrev" class="preview hide" alt="" style="width:100%;max-width:420px;height:auto">
+      <label>Photo ki roshni (kam = zyada dark): <b id="hBrV">78</b>%</label><input type="range" id="hBr" min="40" max="120" value="78">
+      <label>Photo ki position (left ↔ right): <b id="hPosV">50</b>%</label><input type="range" id="hPos" min="0" max="100" value="50">
+      <button class="btn" id="saveHero">Save</button>
+      <button class="btn alt" id="clearHeroPhoto">Default photo wapas</button>
+      <button class="btn del" id="resetHero">Pura hero default karein</button>
+    </section>
+
+    <section id="t-reviews" class="card hide">
+      <h2>Customer Reviews</h2>
+      <p style="color:var(--muted);font-size:12px;line-height:1.6">Jis review par <b>"Website par dikhayein"</b> ka tick hoga wohi homepage ke "What Our Customers Say" mein nazar aaye ga. Agar koi bhi tick na ho to ye section website se chhup jaye ga. Sirf asli customers ke reviews lagayein.</p>
+      <p style="font-size:12px;margin-top:6px">Selected: <b id="revCount">0</b></p>
+      <div id="revAdm"></div>
+      <button class="btn alt" id="addRev">+ Add review</button> <button class="btn" id="saveRev">Save</button>
+    </section>
+
+    <section id="t-sheet" class="card hide">
+      <h2>Orders → Google Sheet</h2>
+      <p style="color:var(--muted);font-size:12px;line-height:1.7">Jo bhi order website par aaye ga woh khud Google Sheet mein ek nayi row ban kar aa jaye ga (WhatsApp wala order pehle ki tarah chalta rahe ga). Setup sirf ek dafa karna hai:</p>
+      <ol style="color:var(--muted);font-size:12px;line-height:1.9;margin:8px 0 8px 18px">
+        <li><b>sheets.google.com</b> par nayi khali Google Sheet banayein (naam: Bin Imran Orders).</li>
+        <li>Menu mein <b>Extensions → Apps Script</b> kholein, wahan ka purana code delete karke neeche wala code paste karein, phir Save (💾) dabayein.</li>
+        <li><b>Deploy → New deployment</b> → type <b>Web app</b>. <i>Execute as:</i> <b>Me</b>, <i>Who has access:</i> <b>Anyone</b> → Deploy. Google permission mange to Allow karein.</li>
+        <li>Jo <b>Web app URL</b> mile (https://script.google.com/macros/s/.../exec) woh neeche pehle box mein paste karein.</li>
+        <li>Apni Google Sheet ka normal link (browser ka address) neeche doosre box mein paste karein, phir Save.</li>
+        <li><b>"Send test order"</b> dabayein, Sheet mein "Orders" tab mein ek test row aani chahiye.</li>
+      </ol>
+      <label>Apps Script code (copy karein)</label>
+      <textarea id="gsCode" rows="9" readonly style="font-family:monospace;font-size:11px"></textarea>
+      <button class="btn alt" id="gsCopy">Copy code</button>
+      <label>1) Web app URL (Apps Script se)</label><input id="shUrl" placeholder="https://script.google.com/macros/s/.../exec">
+      <label>2) Google Sheet ka link (aap ke dekhne ke liye)</label><input id="shLink" placeholder="https://docs.google.com/spreadsheets/d/.../edit">
+      <button class="btn" id="saveSheet">Save</button>
+      <button class="btn alt" id="testSheet">Send test order</button>
+      <a class="btn alt" id="openSheet" href="#" target="_blank" style="display:inline-block;text-decoration:none">📊 Open Orders Sheet</a>
+      <p style="color:var(--muted);font-size:12px;line-height:1.6;margin-top:10px">Save ke baad Backup tab se <b>data.json</b> download karke GitHub par upload karna na bhoolein, warna website par orders sheet mein nahi jayen ge. Sheet ko private rakhein, kisi ke saath share na karein.</p>
+    </section>
+
+    <section id="t-theme" class="card hide"><h2>Theme Colours</h2><p style="color:var(--muted);font-size:12px">Ready-made theme chunein ya apne rang banayein. Save ke baad “Preview my changes” se dekhein.</p><div id="thPre" style="margin:10px 0"></div><div id="thCols"></div><button class="btn" id="saveTheme">Save</button></section>
+
+    <section id="t-backup" class="card hide">
+      <h2>Save to GitHub / Backup</h2>
+      <p style="line-height:1.7;color:var(--muted)">Admin mein jo bhi badlein wo sirf <b>is browser</b> mein save hota hai. Sab visitors ko dikhane ke liye:<br><b>1.</b> Neeche <b>Download data.json</b> dabayein.<br><b>2.</b> GitHub repo kholein (jahan index.html hai).<br><b>3.</b> Purani data.json ki jagah yeh nayi file upload karein.<br><b>4.</b> Photos hamesha <b>images</b> folder mein upload karein.</p>
+      <button class="btn" id="dl">Download data.json</button>
+      <label style="margin-top:18px">Import data.json</label>
+      <input type="file" id="imp" accept="application/json">
+      <button class="btn del" id="reset">Reset to defaults</button>
+    </section>
+  </div>
+</div>
+<div id="msg"></div>
+
+<script>
+const PASSWORD = "binimran123";           // ← change this before uploading
+const KEY = "binimran_data";
+const DEFAULT = {"products": [{"id": 1, "name": "Rose Garden Printed Lawn", "price": 4000, "salePrice": 3200, "description": "Soft printed lawn 3-piece suit with a chiffon dupatta. Light and cool for daily wear.", "category": "Lawn", "link": "", "image": "", "isNew": true, "color": ["#f6a5c0", "#c2185b"]}, {"id": 2, "name": "Mint Breeze Lawn Suit", "price": 2900, "salePrice": 0, "description": "Fresh mint color lawn suit with a neat floral print. Very comfortable in summer.", "category": "Lawn", "link": "", "image": "", "isNew": true, "color": ["#a8e6cf", "#2e7d6b"]}, {"id": 3, "name": "Sunshine Digital Lawn", "price": 4400, "salePrice": 3600, "description": "Bright digital print on soft lawn. Comes with a printed dupatta and plain trouser.", "category": "Lawn", "link": "", "image": "", "isNew": false, "color": ["#ffe08a", "#e6a100"]}, {"id": 4, "name": "Classic Cotton Daily Suit", "price": 2500, "salePrice": 0, "description": "Pure cotton suit that is easy to wear and easy to wash. Good for office and home.", "category": "Cotton", "link": "", "image": "", "isNew": false, "color": ["#cfd8dc", "#546e7a"]}, {"id": 5, "name": "Lilac Dream Cotton Suit", "price": 3300, "salePrice": 2800, "description": "Soft lilac cotton with small block prints. Breathable and gentle on the skin.", "category": "Cotton", "link": "", "image": "", "isNew": true, "color": ["#d1b3ff", "#6a1b9a"]}, {"id": 6, "name": "Peach Blossom Cotton", "price": 2700, "salePrice": 0, "description": "Warm peach cotton suit with a simple border. A nice choice for every day.", "category": "Cotton", "link": "", "image": "", "isNew": false, "color": ["#ffcba4", "#d9622b"]}, {"id": 7, "name": "Royal Maroon Embroidered", "price": 8200, "salePrice": 6800, "description": "Rich maroon suit with fine thread embroidery on the front and sleeves. Perfect for parties.", "category": "Embroidered", "link": "", "image": "", "isNew": true, "color": ["#b23a5c", "#4a0d22"]}, {"id": 8, "name": "Golden Pearl Embroidered", "price": 7500, "salePrice": 0, "description": "Elegant suit with gold embroidery and pearl details. Comes with an embroidered dupatta.", "category": "Embroidered", "link": "", "image": "", "isNew": true, "color": ["#f3d9a4", "#a67c00"]}, {"id": 9, "name": "Emerald Festive Suit", "price": 7400, "salePrice": 6200, "description": "Deep green embroidered suit made for Eid and weddings.", "category": "Embroidered", "link": "", "image": "", "isNew": false, "color": ["#7fd1ae", "#0b6e4f"]}, {"id": 10, "name": "Midnight Black Formal", "price": 8900, "salePrice": 0, "description": "Stylish black formal suit with silver work. Looks great at dinners and events.", "category": "Formal", "link": "", "image": "", "isNew": false, "color": ["#5c5470", "#150f1f"]}, {"id": 11, "name": "Blush Pink Formal Gown Suit", "price": 11500, "salePrice": 9800, "description": "Long formal shirt with a flared design and net dupatta. A soft and graceful look.", "category": "Formal", "link": "", "image": "", "isNew": true, "color": ["#ffd1dc", "#c2185b"]}, {"id": 12, "name": "Ivory Bridal Guest Suit", "price": 9200, "salePrice": 0, "description": "Ivory suit with light gold details. A lovely pick for wedding guests.", "category": "Formal", "link": "", "image": "", "isNew": false, "color": ["#fff3e0", "#b08968"]}, {"id": 13, "name": "Cozy Khaddar Winter Suit", "price": 5000, "salePrice": 4200, "description": "Warm khaddar suit with a woolen shawl. Keeps you cozy all winter.", "category": "Winter", "link": "", "image": "", "isNew": true, "color": ["#c9a98a", "#6d4c41"]}, {"id": 14, "name": "Wine Velvet Shawl Suit", "price": 6500, "salePrice": 0, "description": "Soft velvet shirt with a matching shawl. Warm, rich, and stylish.", "category": "Winter", "link": "", "image": "", "isNew": false, "color": ["#a3294f", "#3d0a1d"]}, {"id": 15, "name": "Grey Marina Winter Suit", "price": 5600, "salePrice": 4800, "description": "Smooth marina fabric with a printed shawl. Easy to style and very warm.", "category": "Winter", "link": "", "image": "", "isNew": false, "color": ["#b0bec5", "#37474f"]}, {"id": 16, "name": "Teal Garden Lawn Suit", "price": 3400, "salePrice": 0, "description": "Teal lawn suit with garden flowers. Light, soft, and pretty.", "category": "Lawn", "link": "", "image": "", "isNew": false, "color": ["#80cbc4", "#00695c"]}], "nav": [{"label": "Lawn", "url": "#/shop/Lawn"}, {"label": "Cotton", "url": "#/shop/Cotton"}, {"label": "Embroidered", "url": "#/shop/Embroidered"}, {"label": "Formal", "url": "#/shop/Formal"}, {"label": "Winter", "url": "#/shop/Winter"}, {"label": "New In", "url": "#/shop/new"}, {"label": "Sale", "url": "#/shop/sale"}], "contact": {"email": "harissheikh1817@gmail.com", "phone": "0312-5632506", "address": ""}, "hero": "", "payments": [{"name": "Cash on Delivery", "on": true, "details": ""}, {"name": "Easypaisa", "on": false, "details": ""}, {"name": "JazzCash", "on": false, "details": ""}, {"name": "Bank Transfer", "on": false, "details": ""}], "social": {"facebook": "", "instagram": "", "tiktok": "", "youtube": "", "whatsapp": "", "waMessage": "Assalam o Alaikum! Mujhe Bin Imran ke suits ke bare mein maloom karna hai."}, "heroCfg": {}, "reviews": [{"name": "Ayesha R.", "stars": 5, "show": true, "text": "The fabric is soft and the fit was perfect. I got many compliments!"}, {"name": "Hina M.", "stars": 5, "show": true, "text": "Beautiful designs and the colors look just like the pictures."}, {"name": "Sara K.", "stars": 5, "show": true, "text": "Fast delivery and very good service. I will order again."}], "sheet": {"url": "", "link": ""}, "theme": {"dark": "#8b2c52", "accent": "#b4577a", "gold": "#a1655b", "bg": "#fdf3f1"}};
+let data, editId=null, imgData="";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(t){const m=$("msg");m.textContent=t;m.classList.add("show");setTimeout(()=>m.classList.remove("show"),1800)}
+function load(){try{data=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!data||!data.products){data=JSON.parse(JSON.stringify(DEFAULT));fetch("data.json").then(r=>r.json()).then(d=>{if(d&&d.products){data=d;fillNew();render()}}).catch(()=>{})}fillNew();if(!data.social)data.social=JSON.parse(JSON.stringify(DEFAULT.social));if(data.hero==null)data.hero="";if(!data.payments)data.payments=[{name:"Cash on Delivery",on:true,details:""},{name:"Easypaisa",on:false,details:""},{name:"JazzCash",on:false,details:""},{name:"Bank Transfer",on:false,details:""}]}
+function fillNew(){if(!data.reviews)data.reviews=JSON.parse(JSON.stringify(DEFAULT.reviews));if(!data.heroCfg)data.heroCfg={};if(!data.sheet)data.sheet={url:"",link:""};if(!data.theme)data.theme=JSON.parse(JSON.stringify(DEFAULT.theme))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));toast("Saved")}catch(e){alert("Storage full. Use smaller images or image paths (images/...) instead of uploads.")}}
+
+/* login */
+function enter(){$("login").classList.add("hide");$("panel").classList.remove("hide");load();render()}
+$("loginBtn").onclick=()=>{if($("pw").value===PASSWORD){sessionStorage.setItem("binimran_admin","1");enter()}else $("lerr").textContent="Wrong password"};
+$("pw").onkeydown=e=>{if(e.key==="Enter")$("loginBtn").click()};
+$("logout").onclick=()=>{sessionStorage.removeItem("binimran_admin");location.reload()};
+if(sessionStorage.getItem("binimran_admin"))enter();
+
+/* tabs */
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  ["products","links","contact","pay","social","hero","theme","reviews","sheet","backup"].forEach(t=>$("t-"+t).classList.toggle("hide",t!==b.dataset.t));
+});
+
+/* products */
+function resize(file,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,600/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*s;c.height=i.height*s;c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.8))};i.src=r.result};r.readAsDataURL(file)}
+function prev(src){const p=$("pPrev");p.src=src||"";p.classList.toggle("hide",!src)}
+$("pFile").onchange=e=>{const f=e.target.files[0];if(f)resize(f,d=>{imgData=d;prev(d)})};
+$("pUrl").oninput=e=>{imgData="";prev(e.target.value)};
+function clearForm(){editId=null;imgData="";["pName","pPrice","pLink","pUrl","pSale","pDesc"].forEach(i=>$(i).value="");$("pFile").value="";$("pNew").checked=false;prev("");$("formTitle").textContent="Add New Product";$("saveProd").textContent="Add Product";$("cancelEdit").classList.add("hide")}
+$("cancelEdit").onclick=clearForm;
+$("saveProd").onclick=()=>{
+  const name=$("pName").value.trim(),price=Number($("pPrice").value);
+  if(!name||!price){alert("Please enter product name and price");return}
+  const p={name,price,salePrice:Number($("pSale").value)||0,description:$("pDesc").value.trim(),isNew:$("pNew").checked,category:$("pCat").value,link:$("pLink").value.trim(),image:imgData||$("pUrl").value.trim()};
+  if(editId){const o=data.products.find(x=>x.id===editId);if(!imgData&&!$("pUrl").value.trim())p.image=o.image;Object.assign(o,p)}
+  else{p.id=Date.now();p.color=["#f6a5c0","#c2185b"];data.products.unshift(p)}
+  save();clearForm();render();
+};
+function render(){renderTheme();
+  $("count").textContent=data.products.length;
+  $("list").innerHTML=data.products.map(p=>`<div class="item">${p.image?`<img src="${esc(p.image)}" alt="">`:'<div class="noimg"></div>'}
+  <div class="info"><b>${esc(p.name)}</b><br><small>Rs. ${Number(p.price).toLocaleString()} · ${esc(p.category)}</small></div>
+  <button class="btn alt" data-e="${p.id}">Edit</button><button class="btn del" data-d="${p.id}">Delete</button></div>`).join("")||"<p>No products yet.</p>";
+  $("list").querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>{
+    const p=data.products.find(x=>x.id==b.dataset.e);editId=p.id;
+    $("pName").value=p.name;$("pPrice").value=p.price;$("pCat").value=p.category;$("pLink").value=p.link||"";$("pSale").value=p.salePrice||"";$("pDesc").value=p.description||"";$("pNew").checked=!!p.isNew;
+    $("pUrl").value=p.image&&!p.image.startsWith("data:")?p.image:"";prev(p.image);
+    $("formTitle").textContent="Edit Product";$("saveProd").textContent="Update Product";$("cancelEdit").classList.remove("hide");scrollTo(0,0)});
+  $("list").querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{if(confirm("Delete this product?")){data.products=data.products.filter(x=>x.id!=b.dataset.d);save();render()}});
+  renderNav();
+  $("sFb").value=data.social.facebook||"";$("sIg").value=data.social.instagram||"";$("sTt").value=data.social.tiktok||"";$("sYt").value=data.social.youtube||"";$("sWa").value=data.social.whatsapp||"";$("sMsg").value=data.social.waMessage||"";renderPay();renderHero();renderRev();renderSheet();
+  $("cEmail").value=data.contact.email;$("cPhone").value=data.contact.phone;$("cAddr").value=data.contact.address;
+}
+
+/* links */
+function renderNav(){
+  $("navRows").innerHTML=data.nav.map((n,i)=>`<div class="link-row"><input value="${esc(n.label)}" data-l="${i}" placeholder="Label"><input value="${esc(n.url)}" data-u="${i}" placeholder="URL"><button class="btn del" style="margin:0" data-r="${i}">✕</button></div>`).join("");
+  $("navRows").querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{syncNav();data.nav.splice(b.dataset.r,1);renderNav()});
+}
+function syncNav(){document.querySelectorAll("[data-l]").forEach(i=>data.nav[i.dataset.l].label=i.value);document.querySelectorAll("[data-u]").forEach(i=>data.nav[i.dataset.u].url=i.value)}
+$("addNav").onclick=()=>{syncNav();data.nav.push({label:"",url:"#"});renderNav()};
+$("saveNav").onclick=()=>{syncNav();data.nav=data.nav.filter(n=>n.label.trim());save();renderNav()};
+
+/* contact */
+$("saveContact").onclick=()=>{data.contact={email:$("cEmail").value.trim(),phone:$("cPhone").value.trim(),address:$("cAddr").value.trim()};save()};
+
+/* payments */
+const eA=t=>String(t==null?"":t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function renderPay(){$("payList").innerHTML=(data.payments||[]).map((m,i)=>'<div class="pcard"><label><input type="checkbox" data-on="'+i+'"'+(m.on?" checked":"")+' style="width:auto"> Show this method</label><label>Method name</label><input data-n="'+i+'" value="'+eA(m.name)+'"><label>Account details (title, number, bank...)</label><textarea rows="2" data-d="'+i+'">'+eA(m.details)+'</textarea><button class="btn del" data-del="'+i+'" style="margin-top:8px">Remove</button></div>').join("")}
+function readPay(){document.querySelectorAll("#payList [data-n]").forEach(e=>data.payments[+e.dataset.n].name=e.value.trim());document.querySelectorAll("#payList [data-d]").forEach(e=>data.payments[+e.dataset.d].details=e.value.trim());document.querySelectorAll("#payList [data-on]").forEach(e=>data.payments[+e.dataset.on].on=e.checked)}
+$("addPay").onclick=()=>{readPay();data.payments.push({name:"New method",on:true,details:""});renderPay()};
+$("payList").onclick=e=>{const i=e.target.dataset.del;if(i!=null){readPay();data.payments.splice(+i,1);renderPay()}};
+$("savePay").onclick=()=>{readPay();data.payments=data.payments.filter(m=>m.name);save();renderPay()};
+
+/* social + hero */
+$("saveSocial").onclick=()=>{data.social={facebook:$("sFb").value.trim(),instagram:$("sIg").value.trim(),tiktok:$("sTt").value.trim(),youtube:$("sYt").value.trim(),whatsapp:$("sWa").value.trim(),waMessage:$("sMsg").value.trim()};save()};
+function hprev(src){const p=$("hPrev");p.src=src||"";p.classList.toggle("hide",!src)}
+function resizeMax(file,max,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*s;c.height=i.height*s;c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.82))};i.src=r.result};r.readAsDataURL(file)}
+
+/* hero section */
+let heroImgData="";
+const HCOL=[["titleColor","Bare title ka rang","#ffffff"],["accentColor","Script line ka rang","#e3588f"],["subColor","Neeche ke text ka rang","#ffffff"],["btnColor","Button ka rang","#f0c58a"]];
+function renderHero(){
+  const c=data.heroCfg||{};
+  $("hL1").value=c.line1||"";$("hL2").value=c.line2||"";$("hSubT").value=c.sub||"";$("hBt").value=c.btnText||"";$("hBl").value=c.btnLink||"";
+  $("hColors").innerHTML=HCOL.map(([k,l,def])=>`<div class="row" style="align-items:end"><div><label>${l}</label><input type="color" id="hc_${k}" data-k="${k}" data-on="${c[k]?1:0}" value="${c[k]||def}" style="height:42px;padding:3px"></div><div><button class="btn alt" data-rc="${k}" style="margin:0">Default rang</button></div></div>`).join("");
+  $("hColors").querySelectorAll("input[type=color]").forEach(i=>i.oninput=()=>i.dataset.on="1");
+  $("hColors").querySelectorAll("[data-rc]").forEach(b=>b.onclick=()=>{const i=$("hc_"+b.dataset.rc),d=HCOL.find(x=>x[0]===b.dataset.rc)[2];i.value=d;i.dataset.on="0"});
+  $("hBr").value=c.brightness||78;$("hBrV").textContent=$("hBr").value;
+  $("hPos").value=c.position!=null&&c.position!==""?c.position:50;$("hPosV").textContent=$("hPos").value;
+  const h=data.hero||"";$("hPath").value=h&&!h.startsWith("data:")?h:"";heroImgData="";$("hFile").value="";hprev(h);
+}
+$("hBr").oninput=e=>$("hBrV").textContent=e.target.value;
+$("hPos").oninput=e=>$("hPosV").textContent=e.target.value;
+$("hPath").oninput=e=>{heroImgData="";hprev(e.target.value.trim())};
+$("hFile").onchange=e=>{const f=e.target.files[0];if(f)resizeMax(f,1600,d=>{heroImgData=d;hprev(d)})};
+$("saveHero").onclick=()=>{
+  const c={line1:$("hL1").value.trim(),line2:$("hL2").value.trim(),sub:$("hSubT").value.trim(),btnText:$("hBt").value.trim(),btnLink:$("hBl").value.trim(),brightness:+$("hBr").value,position:+$("hPos").value};
+  HCOL.forEach(([k])=>{const i=$("hc_"+k);if(i.dataset.on==="1")c[k]=i.value});
+  data.heroCfg=c;
+  const p=$("hPath").value.trim();
+  if(heroImgData)data.hero=heroImgData;else if(p)data.hero=p;else if(!(data.hero||"").startsWith("data:"))data.hero="";
+  save();renderHero();
+};
+$("clearHeroPhoto").onclick=()=>{data.hero="";save();renderHero()};
+$("resetHero").onclick=()=>{if(confirm("Hero ka text, rang aur photo default karein?")){data.heroCfg={};data.hero="";save();renderHero()}};
+
+/* reviews */
+function renderRev(){
+  $("revAdm").innerHTML=(data.reviews||[]).map((r,i)=>`<div class="pcard"><label style="color:#fff"><input type="checkbox" data-rs="${i}" ${r.show?"checked":""} style="width:auto"> Website par dikhayein</label><div class="row"><div><label>Customer ka naam</label><input data-rn="${i}" value="${esc(r.name||"")}"></div><div><label>Stars</label><select data-rt="${i}">${[5,4,3,2,1].map(n=>`<option value="${n}" ${+r.stars===n?"selected":""}>${n} ★</option>`).join("")}</select></div></div><label>Review</label><textarea rows="2" data-rx="${i}">${esc(r.text||"")}</textarea><button class="btn del" data-rdel="${i}" style="margin-top:8px">Remove</button></div>`).join("")||"<p>Abhi koi review nahi.</p>";
+  $("revCount").textContent=(data.reviews||[]).filter(r=>r.show).length+" / "+(data.reviews||[]).length;
+}
+function readRev(){
+  document.querySelectorAll("#revAdm [data-rn]").forEach(e=>data.reviews[+e.dataset.rn].name=e.value.trim());
+  document.querySelectorAll("#revAdm [data-rx]").forEach(e=>data.reviews[+e.dataset.rx].text=e.value.trim());
+  document.querySelectorAll("#revAdm [data-rt]").forEach(e=>data.reviews[+e.dataset.rt].stars=+e.value);
+  document.querySelectorAll("#revAdm [data-rs]").forEach(e=>data.reviews[+e.dataset.rs].show=e.checked);
+}
+$("addRev").onclick=()=>{readRev();data.reviews.push({name:"",stars:5,show:true,text:""});renderRev()};
+$("revAdm").onclick=e=>{const i=e.target.dataset.rdel;if(i!=null&&confirm("Ye review delete karein?")){readRev();data.reviews.splice(+i,1);renderRev()}};
+$("revAdm").onchange=()=>{readRev();$("revCount").textContent=data.reviews.filter(r=>r.show).length+" / "+data.reviews.length};
+$("saveRev").onclick=()=>{readRev();data.reviews=data.reviews.filter(r=>r.text);save();renderRev()};
+
+/* orders sheet */
+const GS_CODE="// Bin Imran - orders to Google Sheet\n// Deploy as: Web app, Execute as \"Me\", Who has access \"Anyone\"\nvar HEAD = [\"Order ID\",\"Date\",\"Name\",\"Phone\",\"City\",\"Address\",\"Notes\",\"Payment\",\"Items\",\"Subtotal\",\"Delivery\",\"Total\",\"Status\"];\n\nfunction safe(v, n) {\n  v = String(v == null ? \"\" : v).slice(0, n || 300);\n  return /^[=+\\-@]/.test(v) ? \"'\" + v : v;   // stop spreadsheet formulas\n}\n\nfunction doPost(e) {\n  var lock = LockService.getScriptLock();\n  lock.waitLock(20000);\n  try {\n    var d = JSON.parse(e.postData.contents);\n    var ss = SpreadsheetApp.getActiveSpreadsheet();\n    var sh = ss.getSheetByName(\"Orders\") || ss.insertSheet(\"Orders\");\n    if (sh.getLastRow() === 0) {\n      sh.appendRow(HEAD);\n      sh.setFrozenRows(1);\n      sh.getRange(1, 1, 1, HEAD.length).setFontWeight(\"bold\");\n    }\n    sh.appendRow([safe(d.id,30), safe(d.date,40), safe(d.name,80), \"\", safe(d.city,60), safe(d.address,250),\n                  safe(d.notes,300), safe(d.payment,80), safe(d.items,900), Number(d.subtotal)||0,\n                  safe(d.delivery,40), Number(d.total)||0, \"Pending\"]);\n    var r = sh.getLastRow();\n    sh.getRange(r, 4).setNumberFormat(\"@\").setValue(safe(d.phone, 20));  // keep leading 0\n    return ContentService.createTextOutput(\"ok\");\n  } finally {\n    lock.release();\n  }\n}\n\nfunction doGet() {\n  return ContentService.createTextOutput(\"Bin Imran orders link is working\");\n}\n";
+function renderSheet(){
+  const s=data.sheet||{};
+  $("gsCode").value=GS_CODE;$("shUrl").value=s.url||"";$("shLink").value=s.link||"";
+  const ok=/^https:\/\/(docs|drive)\.google\.com\//.test(s.link||"");
+  ["sheetTop","openSheet"].forEach(i=>{const e=$(i);e.href=ok?s.link:"#";if(i==="sheetTop")e.classList.toggle("hide",!ok);else e.style.opacity=ok?1:.4});
+}
+$("gsCopy").onclick=()=>{$("gsCode").select();try{navigator.clipboard.writeText(GS_CODE)}catch(e){document.execCommand("copy")}toast("Code copied")};
+$("saveSheet").onclick=()=>{
+  const u=$("shUrl").value.trim(),l=$("shLink").value.trim();
+  if(u&&!/^https:\/\/script\.google\.com\//.test(u)){alert("Web app URL https://script.google.com/... se shuru hona chahiye");return}
+  if(l&&!/^https:\/\/(docs|drive)\.google\.com\//.test(l)){alert("Sheet link https://docs.google.com/spreadsheets/... se shuru hona chahiye");return}
+  data.sheet={url:u,link:l};save();renderSheet();
+};
+$("testSheet").onclick=()=>{
+  const u=$("shUrl").value.trim();
+  if(!/^https:\/\/script\.google\.com\//.test(u)){alert("Pehle Web app URL paste karein");return}
+  fetch(u,{method:"POST",mode:"no-cors",body:JSON.stringify({id:"TEST"+Date.now().toString(36).toUpperCase(),date:new Date().toLocaleString("en-GB"),name:"Test Order",phone:"03000000000",city:"Rawalpindi",address:"Test address",notes:"Ye sirf test hai, delete kar dein",payment:"Cash on Delivery",items:"Test Suit x1 (Rs. 1)",subtotal:1,delivery:"Free",total:1})}).then(()=>toast("Test bheja gaya, Sheet check karein")).catch(()=>alert("Bhejne mein masla aaya"));
+};
+
+/* theme */
+const PRE={"Glow Rose":["#8b2c52","#b4577a","#a1655b","#fdf3f1"],"Soft Lavender":["#4a3366","#8c64c8","#946a14","#fbf9ff"],"Blush Pink":["#7a2f52","#cf3f78","#946a14","#fff8fb"],"Mint Sage":["#1f4d40","#2b8a69","#946a14","#f5fbf8"],"Sky Blue":["#1f3f66","#3b78c4","#946a14","#f5f9ff"],"Peach":["#7a3b22","#c95f31","#946a14","#fff8f3"]};
+const TK=[["dark","Gehra rang (heading & button)"],["accent","Main accent rang"],["gold","Highlight rang"],["bg","Page background"]];
+function renderTheme(){const t=data.theme;$("thPre").innerHTML=Object.keys(PRE).map(n=>`<button class="btn alt" data-p="${n}" style="margin:4px 6px 0 0">${n}</button>`).join("");$("thCols").innerHTML=TK.map(([k,l])=>`<label>${l}</label><input type="color" data-th="${k}" value="${t[k]}" style="height:42px;padding:2px">`).join("")}
+$("t-theme").onclick=e=>{const p=e.target.dataset.p;if(p){data.theme=Object.fromEntries(TK.map(([k],i)=>[k,PRE[p][i]]));renderTheme()}};
+$("t-theme").oninput=e=>{if(e.target.dataset.th)data.theme[e.target.dataset.th]=e.target.value};
+$("saveTheme").onclick=save;
+
+/* backup */
+$("dl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));a.download="data.json";a.click()};
+$("imp").onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.products)throw 0;data=d;fillNew();save();render()}catch(x){alert("Invalid data.json")}})};
+$("reset").onclick=()=>{if(confirm("Reset everything to defaults?")){localStorage.removeItem(KEY);load();render();toast("Reset")}};
+</script>
+</body>
+</html>
