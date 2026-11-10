@@ -8,28 +8,33 @@
   <title>Bin Imran – Suits for Ladies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Top message strip -->
+  <div class="topmsg" id="topMsg"></div>
+
   <!-- Header -->
   <div class="head-wrap">
     <header class="header">
-      <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h12M3 17h18"/></svg></button>
+      <button class="icon-btn mob-only" id="menuBtn" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h12M3 17h18"/></svg></button>
       <a href="#/" class="logo"><b>Bin Imran</b><small>Ladies Clothing</small></a>
+      <div class="hcenter">
+        <form class="searchbar" id="searchForm">
+          <input id="searchInput" type="search" placeholder="Search for suits, fabrics, or collections..." aria-label="Search suits">
+          <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+        </form>
+        <nav class="catbar" id="catbar" aria-label="Categories"></nav>
+      </div>
       <nav class="actions">
-        <button class="icon-btn" id="searchBtn" aria-label="Search"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
-        <a class="icon-btn" href="#/wishlist" aria-label="Wishlist"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/></svg><em id="wishCount" hidden>0</em></a>
-        <a class="icon-btn" href="#/account" aria-label="Account"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.600-6 8-6s8 2 8 6"/></svg></a>
-        <a class="icon-btn" href="#/cart" aria-label="Cart"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><em id="cartCount" hidden>0</em></a>
+        <button class="icon-btn mob-only" id="searchBtn" aria-label="Search"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+        <a class="act" href="#/account" aria-label="Account"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.600-6 8-6s8 2 8 6"/></svg><span>Account</span></a>
+        <a class="act" href="#/wishlist" aria-label="Wishlist"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.400-7-10a4 4 0 0 1 7-2.600A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/></svg><span>Wishlist</span><em id="wishCount" hidden>0</em></a>
+        <a class="act" href="#/cart" aria-label="Cart"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Cart</span><em id="cartCount" hidden>0</em></a>
       </nav>
     </header>
-    <nav class="catbar" id="catbar" aria-label="Categories"></nav>
-    <form class="searchbar" id="searchForm">
-      <input id="searchInput" type="search" placeholder="Search suits, lawn, cotton, formal..." aria-label="Search suits">
-      <button type="submit">Search</button>
-    </form>
   </div>
 
   <!-- Slide-in menu -->
@@ -41,6 +46,7 @@
     <nav class="menu" id="menu">
       <a href="#/shop/Lawn">Lawn</a><a href="#/shop/Cotton">Cotton</a><a href="#/shop/Embroidered">Embroidered</a><a href="#/shop/Formal">Formal</a><a href="#/shop/Winter">Winter</a><a href="#/shop/new">New In</a><a href="#/shop/sale" class="hot">Sale</a>
     </nav>
+    <a class="dlink" href="#/track">Track Order</a>
     <a class="dlink" href="#/help">Help &amp; Size Guide</a>
   </aside>
 
@@ -60,7 +66,7 @@
       </div>
       <div>
         <h5>Help</h5>
-        <a href="#/help">Track Order</a><a href="#/help">Exchange Policy</a><a href="#/help">Size Guide</a><a href="#/help">FAQs</a><a href="#/help">Contact Us</a>
+        <a href="#/track">Track Order</a><a href="#/help">Exchange Policy</a><a href="#/help">Size Guide</a><a href="#/help">FAQs</a><a href="#/help">Contact Us</a>
       </div>
       <div>
         <h5>Contact Us</h5>

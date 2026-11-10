@@ -2,6 +2,8 @@
 const $ = (s, r = document) => r.querySelector(s);
 const app = $('#app');
 const rs = n => 'Rs. ' + Number(n).toLocaleString('en-PK');
+const CITIES = ['Lahore', 'Karachi', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan', 'Peshawar', 'Quetta', 'Gujranwala', 'Sialkot', 'Other'];
+const KEYWORDS = ['Premium Lawn', 'Hand Embroidery', 'Festive Formals', 'Soft Cotton', 'Winter Shawls', 'Easy Exchange', 'Cash on Delivery'];
 
 /* ---------- Saved data (cart + wishlist) ---------- */
 const store = {
@@ -84,7 +86,7 @@ function home() {
   <section class="hero"${heroStyle()}>${SITE.heroImg ? '' : '<div class="hero-photo" aria-hidden="true"></div>'}<div class="wrap">
     <div class="hero-copy">
       <span class="eyebrow">YOUR STYLE, YOUR RULES</span>
-      <h1${hc('titleColor')}>${H().line2 || 'Find your elegance.'}<i${hc('accentColor')}>${H().line1 || 'Own your style.'}</i></h1>
+      <h1${hc('titleColor')}><i${hc('accentColor')}>${H().line1 || 'Beautiful Suits,'}</i>${H().line2 || 'For Every Woman.'}</h1>
       <p${hc('subColor')}>${H().sub || 'Discover your new favourite suits, from everyday lawn to festive embroidery.'}</p>
       <a class="btn" href="${H().btnLink || '#/shop'}"${H().btnColor ? ` style="background:${H().btnColor}"` : ''}>${H().btnText || 'Shop Now ↗'}</a>
     </div>
@@ -99,27 +101,20 @@ function home() {
       </svg>
       <span class="chip c1">✦ New Season</span><span class="chip c2">Free Delivery</span>
     </div>
-    <div class="perks">
-      <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></i><b>Premium Quality</b><small>Soft &amp; breathable fabrics</small></div>
-      <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7.500" cy="17.500" r="1.800"/><circle cx="17.500" cy="17.500" r="1.800"/></svg></i><b>Free Delivery</b><small>Over ${rs(SITE.freeDeliveryOver)}</small></div>
-      <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></i><b>Easy Exchange</b><small>Hassle-free</small></div>
-      <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.500" width="18" height="11" rx="2.500"/><circle cx="12" cy="12" r="2.500"/></svg></i><b>Cash on Delivery</b><small>Pay at your door</small></div>
-    </div>
   </div></section>
+
+  <section class="perks-sec2"><div class="wrap perks">
+    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></i><b>Premium Quality</b><small>Soft &amp; breathable fabrics</small></div>
+    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7.500" cy="17.500" r="1.800"/><circle cx="17.500" cy="17.500" r="1.800"/></svg></i><b>Free Delivery</b><small>Over ${rs(SITE.freeDeliveryOver)}</small></div>
+    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></i><b>Easy Exchange</b><small>Hassle-free</small></div>
+    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.500" width="18" height="11" rx="2.500"/><circle cx="12" cy="12" r="2.500"/></svg></i><b>Cash on Delivery</b><small>Pay at your door</small></div>
+  </div></section>
+
+  <section class="kwband"><div class="kwtrack">${[...KEYWORDS, ...KEYWORDS].map(k => `<span>${k}</span>`).join('')}</div></section>
 
   <section class="section" style="padding-top:0"><div class="wrap">
     <div class="sec-head"><div><h2>New Arrivals</h2><p>Fresh suits for every day</p></div><a class="link" href="#/shop/new">View All →</a></div>
     ${grid(nw)}
-  </div></section>
-
-  <section class="section" style="padding-top:0"><div class="wrap">
-    <div class="sec-head"><div><h2>Hot Deals</h2><p>Limited time offers</p></div><a class="link" href="#/shop/sale">View All →</a></div>
-    ${grid(sale)}
-  </div></section>
-
-  <section class="section" style="padding-top:0"><div class="wrap promos">
-    <div class="promo"><small>Wedding &amp; Eid</small><h3>Eid &amp; Festive Collection</h3><p>Elegant embroidered suits<br>for your special days.</p><a class="btn" href="#/shop/Embroidered">Shop Festive →</a></div>
-    <div class="promo two"><small>Season Special</small><h3>Up To 30% Off</h3><p>On selected suits</p><a class="btn" href="#/shop/sale">Shop the Sale →</a></div>
   </div></section>
 
   <section class="section" style="padding-top:0"><div class="wrap">
@@ -207,22 +202,83 @@ function cartPage() {
       <div class="sum-row total"><span>Total</span><span>${rs(total)}</span></div>
       <input id="cName" placeholder="Your name">
       <input id="cPhone" placeholder="Phone number" inputmode="tel">
-      <textarea id="cAddr" rows="3" placeholder="Full delivery address"></textarea>
-      ${paySel()}<button class="btn wa block" id="checkout">Order on WhatsApp</button>
+      <select id="cCity">${CITIES.map(c => `<option${c === 'Rawalpindi' ? ' selected' : ''}>${c}</option>`).join('')}</select>
+      <textarea id="cAddr" rows="3" placeholder="Full delivery address (house #, street, area)"></textarea>
+      ${paySel()}<button class="btn wa block" id="checkout">Place Order</button>
       ${payNote()}
     </aside>
   </div>`;
 }
+function orderWaLink(o) {
+  let msg = `Hello Bin Imran! I want to place an order (Order ID: ${o.id}):\n\n`;
+  o.items.forEach((i, n) => { msg += `${n + 1}. ${i.name} (Size ${i.size}) x${i.qty} = ${rs(i.price * i.qty)}\n`; });
+  msg += `\nSubtotal: ${rs(o.sub)}\nDelivery: ${o.ship ? rs(o.ship) : 'Free'}\nTotal: ${rs(o.total)}\n\nName: ${o.name}\nPhone: ${o.phone}\nCity: ${o.city}\nAddress: ${o.address}\nPayment: ${o.payment}`;
+  return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(msg)}`;
+}
 function checkout() {
-  const name = $('#cName').value.trim(), phone = $('#cPhone').value.trim(), addr = $('#cAddr').value.trim();
+  const name = $('#cName').value.trim(), phone = $('#cPhone').value.trim(), city = ($('#cCity') || {}).value || '', addr = $('#cAddr').value.trim();
   if (!name || !phone || !addr) { toast('Please fill name, phone and address'); return; }
   const { items, sub, ship, total } = calc();
   const pay = ($('#cPay') || {}).value || 'Cash on Delivery';
-  if (SITE.sheet) fetch(SITE.sheet, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ id: 'BI' + Date.now().toString(36).toUpperCase(), date: new Date().toLocaleString('en-GB'), name, phone, city: '', address: addr, notes: '', payment: pay, items: items.map(i => `${i.p.name} (${i.size}) x${i.qty}`).join('; '), subtotal: sub, delivery: ship ? ship : 'Free', total }) }).catch(() => {});
-  let msg = `Hello Bin Imran! I want to place an order:\n\n`;
-  items.forEach((i, n) => { msg += `${n + 1}. ${i.p.name} (Size ${i.size}) x${i.qty} = ${rs(i.p.price * i.qty)}\n`; });
-  msg += `\nSubtotal: ${rs(sub)}\nDelivery: ${ship ? rs(ship) : 'Free'}\nTotal: ${rs(total)}\n\nName: ${name}\nPhone: ${phone}\nAddress: ${addr}\nPayment: ${pay}`;
-  window.open(`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+  const orderId = 'BI' + Date.now().toString(36).toUpperCase();
+  const order = { id: orderId, name, phone, city, address: addr, payment: pay, items: items.map(i => ({ name: i.p.name, size: i.size, qty: i.qty, price: i.p.price })), sub, ship, total };
+  fetch('/api/orders', { method: 'POST', keepalive: true, headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: orderId, name, phone, city, address: addr, payment: pay, items: order.items, total }) }).catch(() => {});
+  if (SITE.sheet) fetch(SITE.sheet, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ id: orderId, date: new Date().toLocaleString('en-GB'), name, phone, city, address: addr, notes: '', payment: pay, items: items.map(i => `${i.p.name} (${i.size}) x${i.qty}`).join('; '), subtotal: sub, delivery: ship ? ship : 'Free', total }) }).catch(() => {});
+  store.set('bi_last_order', order);
+  cart = []; save();
+  location.hash = '#/order/' + orderId;
+}
+function orderConfirm(id) {
+  const o = store.get('bi_last_order');
+  if (!o || !Array.isArray(o) === false || o.id !== id) {
+    return `<div class="empty"><h2 style="font-family:var(--serif)">Order ${id}</h2><p>Thanks! Use Track Order with your Order ID and phone number to see its status.</p><a class="btn" href="#/track/${id}">Track This Order</a><a class="btn ghost" href="#/shop" style="margin-left:10px">Continue Shopping</a></div>`;
+  }
+  return `<div class="wrap section" style="max-width:560px">
+    <div class="box" style="margin:0 auto;max-width:none;text-align:center">
+      <div style="font-size:46px">✅</div>
+      <h2 style="font-family:var(--serif);color:var(--plum);margin:10px 0 4px">Order Placed!</h2>
+      <p style="color:var(--muted)">We will confirm your order on WhatsApp shortly.</p>
+      <div style="background:var(--cream);border-radius:14px;padding:16px;margin:18px 0;text-align:left">
+        <p><b>Order ID:</b> ${o.id}</p>
+        <p><b>Name:</b> ${o.name}</p>
+        <p><b>City:</b> ${o.city || '-'}</p>
+        <p><b>Payment:</b> ${o.payment}</p>
+        <p style="margin-top:8px"><b>Total: ${rs(o.total)}</b></p>
+      </div>
+      <a class="btn wa block" target="_blank" rel="noopener" href="${orderWaLink(o)}">Send Order on WhatsApp</a>
+      <div style="display:flex;gap:10px;margin-top:10px">
+        <a class="btn ghost block" href="#/track/${o.id}">Track This Order</a>
+        <a class="btn dark block" href="#/shop">Continue Shopping</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Track Order ---------- */
+function trackPage(prefillId) {
+  const pf = prefillId ? String(prefillId).replace(/"/g, '').slice(0, 40) : '';
+  return `<div class="page-title"><h1>Track Your Order</h1><p>Enter your Order ID and the phone number used when ordering</p></div>
+  <div class="wrap section" style="max-width:520px">
+    <div class="box" style="margin:0 0 20px;max-width:none">
+      <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Order ID</label>
+      <input id="trId" placeholder="e.g. BIL8X2F9A0" value="${pf}" style="width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;margin-bottom:12px;background:var(--cream)">
+      <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Phone number</label>
+      <input id="trPhone" placeholder="03xx-xxxxxxx" inputmode="tel" style="width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;margin-bottom:14px;background:var(--cream)">
+      <button class="btn block" id="trBtn">Track Order</button>
+    </div>
+    <div id="trResult"></div>
+  </div>`;
+}
+function renderOrderResult(d) {
+  const box = $('#trResult'); if (!box) return;
+  if (!d || d.error) { box.innerHTML = `<div class="box" style="margin:0;max-width:none"><p style="color:#c0392b">Order not found. Please check your Order ID and phone number.</p></div>`; return; }
+  box.innerHTML = `<div class="box" style="margin:0;max-width:none">
+    <h3 style="font-family:var(--serif);color:var(--plum);margin-bottom:10px">Order ${d.id}</h3>
+    <p><b>Status:</b> <span style="color:var(--pink);font-weight:600">${d.status}</span></p>
+    <p style="margin-top:4px;color:var(--muted);font-size:13px">${new Date(d.date).toLocaleDateString()}</p>
+    <ul class="points" style="margin-top:14px">${d.items.map(i => `<li>${i.name}${i.size ? ' (' + i.size + ')' : ''} × ${i.qty}</li>`).join('')}</ul>
+    <p style="margin-top:10px"><b>Total: ${rs(d.total)}</b></p>
+  </div>`;
 }
 
 function wishPage() {
@@ -279,6 +335,8 @@ function route() {
   else if (parts[0] === 'wishlist') html = wishPage();
   else if (parts[0] === 'account') html = account();
   else if (parts[0] === 'help') html = help();
+  else if (parts[0] === 'track') html = trackPage(parts[1]);
+  else if (parts[0] === 'order') html = orderConfirm(parts[1]);
   else html = home();
   app.innerHTML = html;
   window.scrollTo({ top: 0 });
@@ -303,6 +361,12 @@ document.addEventListener('click', e => {
   else if (t.dataset.q) { const i = cart[+t.dataset.q]; i.qty += +t.dataset.d; if (i.qty < 1) cart.splice(+t.dataset.q, 1); save(); route(); }
   else if (t.dataset.rm) { cart.splice(+t.dataset.rm, 1); save(); route(); }
   else if (t.id === 'checkout') checkout();
+  else if (t.id === 'trBtn') {
+    const id = $('#trId').value.trim(), ph = $('#trPhone').value.trim();
+    if (!id || !ph) { toast('Enter Order ID and phone number'); return; }
+    const box = $('#trResult'); if (box) box.innerHTML = '<p style="color:var(--muted)">Checking…</p>';
+    fetch('/api/orders/' + encodeURIComponent(id) + '?phone=' + encodeURIComponent(ph)).then(r => r.json()).then(renderOrderResult).catch(() => renderOrderResult(null));
+  }
   else if (t.id === 'saveAcc') { localStorage.setItem('bi_name', $('#aName').value); localStorage.setItem('bi_phone', $('#aPhone').value); localStorage.setItem('bi_addr', $('#aAddr').value); toast('Details saved ✓'); }
 });
 document.addEventListener('change', e => {
@@ -325,7 +389,8 @@ $('#searchForm').addEventListener('submit', e => {
   $('#fYear').textContent = SITE.year;
   $('#waFloat').href = 'https://wa.me/' + SITE.whatsapp + (SITE.waMessage ? '?text=' + encodeURIComponent(SITE.waMessage) : '');
   if (SITE.nav) $('#menu').innerHTML = SITE.nav.map(n => `<a href="${n.url}"${n.label === 'Sale' ? ' class="hot"' : ''}>${n.label}</a>`).join('');
-  $('#catbar').innerHTML = $('#menu').innerHTML;
+  $('#catbar').innerHTML = '<a href="#/">Home</a>' + $('#menu').innerHTML;
+  $('#topMsg').innerHTML = ['Free Delivery on Orders Over ' + rs(SITE.freeDeliveryOver), 'Easy Exchange', 'Cash on Delivery'].map(m => `<span>${m}</span>`).join('');
   if (SITE.address) $('#fAddress').textContent = '📍 ' + SITE.address;
   const so = SITE.social || {};
   $('#fSocial').innerHTML = [['facebook', 'Facebook'], ['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['youtube', 'YouTube']].filter(([k]) => so[k]).map(([k, l]) => `<a href="${so[k]}" target="_blank" rel="noopener">${l}</a>`).join('');

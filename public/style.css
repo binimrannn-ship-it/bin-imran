@@ -373,3 +373,92 @@ table.size td{padding:11px;text-align:center;border-bottom:1px solid var(--line)
   .hero:has(.hero-photo) .hero-copy{max-width:none}
 }
 .hero:has(.hero-photo) .perks{background:rgba(255,255,255,.88);backdrop-filter:blur(8px)}
+
+/* Hero: full-width photo, text on the left, perks card at the bottom */
+@media(min-width:861px){
+  .hero:has(.hero-photo) .wrap{min-height:720px;grid-template-rows:1fr auto;padding-top:40px;padding-bottom:34px}
+  .hero:has(.hero-photo) .hero-copy{align-self:center}
+  .hero:has(.hero-photo) .perks{margin-top:0}
+  .hero-photo{left:0;right:0;width:100%;background-position:right center;-webkit-mask-image:none;mask-image:none}
+  .hero:has(.hero-photo)::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(253,238,234,.94) 0,rgba(253,238,234,.78) 28%,rgba(253,238,234,0) 50%)}
+}
+.hero:has(.hero-photo) .perks{background:rgba(255,255,255,.8)}
+
+/* ===== HEADER v3: logo left | search + menu centre | icons right ===== */
+.topmsg{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;padding:9px 5%;background:var(--tint2);color:var(--plum);font-size:13px;letter-spacing:1px}
+.header{grid-template-columns:auto 1fr auto;gap:28px;padding:14px 5% 0}
+.header .logo{align-items:flex-start;text-align:left;padding-bottom:14px}
+.header .logo b{font-size:32px}
+.hcenter{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.searchbar,.searchbar.open{display:flex;width:100%;max-width:none;margin:0;padding:0;position:relative}
+.searchbar input{width:100%;padding:13px 54px 13px 22px;border-radius:40px;background:#fff}
+.searchbar button{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;color:var(--plum);padding:0;width:40px;height:40px;display:grid;place-items:center;border-radius:50%}
+.catbar{border:0;padding:0;margin:0;gap:2px}
+.catbar a{padding:10px 14px 12px;font-size:14px;letter-spacing:.3px;text-transform:none;font-weight:500}
+.catbar a.hot{color:var(--pink)}
+.actions{justify-self:end;gap:6px;align-self:start;padding-bottom:14px}
+.actions .act{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 12px;color:var(--plum);font-size:13px;line-height:1.2}
+.actions .act span{color:var(--plum);font-size:13px}
+.actions .act:hover{color:var(--pink)}
+.actions .act em{position:absolute;top:-6px;right:2px;background:var(--plum);color:#fff;font-style:normal;font-size:10px;min-width:17px;height:17px;border-radius:50%;display:grid;place-items:center}
+.actions .act em[hidden]{display:none}
+.mob-only{display:none}
+.header{border-bottom:1px solid var(--line)}
+@media(max-width:860px){
+  .mob-only{display:inline-grid}
+  .header{grid-template-columns:auto 1fr auto;grid-template-areas:"menu logo actions" "center center center";gap:0 6px;padding:10px 3% 0}
+  #menuBtn{grid-area:menu;margin-left:-6px}
+  .header .logo{grid-area:logo;align-items:center;text-align:center;padding-bottom:10px}
+  .header .logo b{font-size:24px}
+  .actions{grid-area:actions;padding-bottom:10px;gap:0}
+  .actions .act{padding:2px 7px}.actions .act span{display:none}
+  .actions .act[href="#/account"]{display:none}
+  .hcenter{grid-area:center;align-items:stretch;gap:0}
+  .searchbar{display:none}.searchbar.open{display:flex;margin:0 0 8px}
+  .catbar{justify-content:flex-start;overflow-x:auto;margin:0 -3%;padding:0 3%}
+  .catbar a{padding:10px 12px;font-size:13px}
+  .topmsg{gap:6px 18px;font-size:11px;padding:7px 3%}
+}
+/* hero heading: script + bold */
+.hero h1{font-family:var(--serif);font-weight:700;line-height:1.05}
+.hero h1 i{display:block;font-family:'Great Vibes',cursive;font-style:normal;font-weight:400;font-size:1.35em;line-height:1.1;margin-bottom:2px}
+.hero p{font-size:17px}
+.hero h1{font-size:clamp(32px,4.2vw,56px)}
+.hero h1 i{font-size:1.3em;white-space:nowrap}
+.hero p{font-size:16px;max-width:420px}
+@media(max-width:860px){.hero h1{font-size:clamp(30px,8vw,44px)}.hero p{margin-inline:auto}}
+@media(min-width:861px){
+  .hero-photo{background:linear-gradient(90deg,rgba(253,238,234,.97) 0,rgba(253,238,234,.9) 30%,rgba(253,238,234,.45) 44%,rgba(253,238,234,0) 60%),url('images/hero.jpg') right center/cover no-repeat}
+  .hero:has(.hero-photo)::before{display:none}
+}
+
+/* Hero photo: fitted to hero height (not zoomed), fades into the left side */
+@media(min-width:861px){
+  .hero-photo{left:auto;right:0;width:auto;aspect-ratio:16/9;background:url('images/hero.jpg') center/cover no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}
+  .hero:has(.hero-photo) .wrap{min-height:0;padding-top:44px;padding-bottom:36px}
+}
+.wrap,.foot-grid{max-width:1760px}
+
+/* Perks card now sits BELOW the hero (photo stays clear above it) */
+.perks-sec{padding:28px 0 8px}
+.perks-sec .perks{margin-top:0;background:#fff;backdrop-filter:none;box-shadow:0 6px 24px rgba(26,8,19,.06)}
+.hero + .perks-sec + .section{padding-top:40px !important}
+@media(min-width:861px){
+  .hero:has(.hero-photo) .wrap{min-height:520px;display:grid;align-content:center;padding-top:40px;padding-bottom:40px}
+}
+@media(max-width:860px){
+  .hero:has(.hero-photo) .wrap{min-height:440px;display:grid;align-content:center}
+}
+
+/* Scrolling keyword banner (home page) */
+.kwband{background:var(--plum);color:#fff;overflow:hidden;white-space:nowrap;padding:12px 0}
+.kwtrack{display:inline-flex;gap:0;animation:kwscroll 26s linear infinite}
+.kwtrack span{flex-shrink:0;padding:0 26px;font-size:13px;letter-spacing:2px;text-transform:uppercase;position:relative}
+.kwtrack span::after{content:"✦";position:absolute;right:-2px;color:var(--gold);font-size:11px}
+@keyframes kwscroll{to{transform:translateX(-50%)}}
+
+/* Perks: standalone section below hero (not overlapping the photo) */
+.perks-sec2{background:#fff;padding:34px 0;border-bottom:1px solid var(--line)}
+.perks-sec2 .perks{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 10px;margin:0}
+@media(max-width:860px){.perks-sec2{padding:26px 0}.perks-sec2 .perks{grid-template-columns:repeat(2,1fr);gap:24px 0}}
+.hero:has(.hero-photo) .wrap{padding-bottom:40px}

@@ -78,6 +78,7 @@ b{color:#fff}
       <button data-t="hero">Hero Section</button>
       <button data-t="theme">Theme Colours</button>
       <button data-t="reviews">Reviews</button>
+      <button data-t="orders">Orders</button>
       <button data-t="sheet">Orders Sheet</button>
       <button data-t="backup">Save / Backup</button>
     </div>
@@ -175,6 +176,14 @@ b{color:#fff}
       <button class="btn alt" id="addRev">+ Add review</button> <button class="btn" id="saveRev">Save</button>
     </section>
 
+    <section id="t-orders" class="card hide">
+      <h2>Orders</h2>
+      <p style="color:var(--muted);font-size:12px;line-height:1.7">Jo orders website se (cart checkout) aayein woh yahan dikhenge. Status update karne ke liye dropdown se status chunein aur "Update" dabayein. (WhatsApp wale orders bhi yahan aa jayenge agar grahak ne site ke cart se order kiya ho.)</p>
+      <button class="btn alt" id="ordRefresh" style="margin-top:4px">Refresh</button>
+      <div id="ordMsg" style="color:var(--muted);font-size:13px;margin-top:10px"></div>
+      <div id="ordList" style="margin-top:10px"></div>
+    </section>
+
     <section id="t-sheet" class="card hide">
       <h2>Orders → Google Sheet</h2>
       <p style="color:var(--muted);font-size:12px;line-height:1.7">Jo bhi order website par aaye ga woh khud Google Sheet mein ek nayi row ban kar aa jaye ga (WhatsApp wala order pehle ki tarah chalta rahe ga). Setup sirf ek dafa karna hai:</p>
@@ -215,7 +224,7 @@ b{color:#fff}
 const PASSWORD = "binimran123";           // ← change this before uploading
 const KEY = "binimran_data";
 const DEFAULT = {"products": [{"id": 1, "name": "Rose Garden Printed Lawn", "price": 4000, "salePrice": 3200, "description": "Soft printed lawn 3-piece suit with a chiffon dupatta. Light and cool for daily wear.", "category": "Lawn", "link": "", "image": "", "isNew": true, "color": ["#f6a5c0", "#c2185b"]}, {"id": 2, "name": "Mint Breeze Lawn Suit", "price": 2900, "salePrice": 0, "description": "Fresh mint color lawn suit with a neat floral print. Very comfortable in summer.", "category": "Lawn", "link": "", "image": "", "isNew": true, "color": ["#a8e6cf", "#2e7d6b"]}, {"id": 3, "name": "Sunshine Digital Lawn", "price": 4400, "salePrice": 3600, "description": "Bright digital print on soft lawn. Comes with a printed dupatta and plain trouser.", "category": "Lawn", "link": "", "image": "", "isNew": false, "color": ["#ffe08a", "#e6a100"]}, {"id": 4, "name": "Classic Cotton Daily Suit", "price": 2500, "salePrice": 0, "description": "Pure cotton suit that is easy to wear and easy to wash. Good for office and home.", "category": "Cotton", "link": "", "image": "", "isNew": false, "color": ["#cfd8dc", "#546e7a"]}, {"id": 5, "name": "Lilac Dream Cotton Suit", "price": 3300, "salePrice": 2800, "description": "Soft lilac cotton with small block prints. Breathable and gentle on the skin.", "category": "Cotton", "link": "", "image": "", "isNew": true, "color": ["#d1b3ff", "#6a1b9a"]}, {"id": 6, "name": "Peach Blossom Cotton", "price": 2700, "salePrice": 0, "description": "Warm peach cotton suit with a simple border. A nice choice for every day.", "category": "Cotton", "link": "", "image": "", "isNew": false, "color": ["#ffcba4", "#d9622b"]}, {"id": 7, "name": "Royal Maroon Embroidered", "price": 8200, "salePrice": 6800, "description": "Rich maroon suit with fine thread embroidery on the front and sleeves. Perfect for parties.", "category": "Embroidered", "link": "", "image": "", "isNew": true, "color": ["#b23a5c", "#4a0d22"]}, {"id": 8, "name": "Golden Pearl Embroidered", "price": 7500, "salePrice": 0, "description": "Elegant suit with gold embroidery and pearl details. Comes with an embroidered dupatta.", "category": "Embroidered", "link": "", "image": "", "isNew": true, "color": ["#f3d9a4", "#a67c00"]}, {"id": 9, "name": "Emerald Festive Suit", "price": 7400, "salePrice": 6200, "description": "Deep green embroidered suit made for Eid and weddings.", "category": "Embroidered", "link": "", "image": "", "isNew": false, "color": ["#7fd1ae", "#0b6e4f"]}, {"id": 10, "name": "Midnight Black Formal", "price": 8900, "salePrice": 0, "description": "Stylish black formal suit with silver work. Looks great at dinners and events.", "category": "Formal", "link": "", "image": "", "isNew": false, "color": ["#5c5470", "#150f1f"]}, {"id": 11, "name": "Blush Pink Formal Gown Suit", "price": 11500, "salePrice": 9800, "description": "Long formal shirt with a flared design and net dupatta. A soft and graceful look.", "category": "Formal", "link": "", "image": "", "isNew": true, "color": ["#ffd1dc", "#c2185b"]}, {"id": 12, "name": "Ivory Bridal Guest Suit", "price": 9200, "salePrice": 0, "description": "Ivory suit with light gold details. A lovely pick for wedding guests.", "category": "Formal", "link": "", "image": "", "isNew": false, "color": ["#fff3e0", "#b08968"]}, {"id": 13, "name": "Cozy Khaddar Winter Suit", "price": 5000, "salePrice": 4200, "description": "Warm khaddar suit with a woolen shawl. Keeps you cozy all winter.", "category": "Winter", "link": "", "image": "", "isNew": true, "color": ["#c9a98a", "#6d4c41"]}, {"id": 14, "name": "Wine Velvet Shawl Suit", "price": 6500, "salePrice": 0, "description": "Soft velvet shirt with a matching shawl. Warm, rich, and stylish.", "category": "Winter", "link": "", "image": "", "isNew": false, "color": ["#a3294f", "#3d0a1d"]}, {"id": 15, "name": "Grey Marina Winter Suit", "price": 5600, "salePrice": 4800, "description": "Smooth marina fabric with a printed shawl. Easy to style and very warm.", "category": "Winter", "link": "", "image": "", "isNew": false, "color": ["#b0bec5", "#37474f"]}, {"id": 16, "name": "Teal Garden Lawn Suit", "price": 3400, "salePrice": 0, "description": "Teal lawn suit with garden flowers. Light, soft, and pretty.", "category": "Lawn", "link": "", "image": "", "isNew": false, "color": ["#80cbc4", "#00695c"]}], "nav": [{"label": "Lawn", "url": "#/shop/Lawn"}, {"label": "Cotton", "url": "#/shop/Cotton"}, {"label": "Embroidered", "url": "#/shop/Embroidered"}, {"label": "Formal", "url": "#/shop/Formal"}, {"label": "Winter", "url": "#/shop/Winter"}, {"label": "New In", "url": "#/shop/new"}, {"label": "Sale", "url": "#/shop/sale"}], "contact": {"email": "harissheikh1817@gmail.com", "phone": "0312-5632506", "address": ""}, "hero": "", "payments": [{"name": "Cash on Delivery", "on": true, "details": ""}, {"name": "Easypaisa", "on": false, "details": ""}, {"name": "JazzCash", "on": false, "details": ""}, {"name": "Bank Transfer", "on": false, "details": ""}], "social": {"facebook": "", "instagram": "", "tiktok": "", "youtube": "", "whatsapp": "", "waMessage": "Assalam o Alaikum! Mujhe Bin Imran ke suits ke bare mein maloom karna hai."}, "heroCfg": {}, "reviews": [{"name": "Ayesha R.", "stars": 5, "show": true, "text": "The fabric is soft and the fit was perfect. I got many compliments!"}, {"name": "Hina M.", "stars": 5, "show": true, "text": "Beautiful designs and the colors look just like the pictures."}, {"name": "Sara K.", "stars": 5, "show": true, "text": "Fast delivery and very good service. I will order again."}], "sheet": {"url": "", "link": ""}, "theme": {"dark": "#8b2c52", "accent": "#b4577a", "gold": "#a1655b", "bg": "#fdf3f1"}};
-let data, editId=null, imgData="";
+let data, editId=null, imgData="", ADMIN_PW="";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function toast(t){const m=$("msg");m.textContent=t;m.classList.add("show");setTimeout(()=>m.classList.remove("show"),1800)}
@@ -225,15 +234,16 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(data));toast("Saved"
 
 /* login */
 function enter(){$("login").classList.add("hide");$("panel").classList.remove("hide");load();render()}
-$("loginBtn").onclick=()=>{if($("pw").value===PASSWORD){sessionStorage.setItem("binimran_admin","1");enter()}else $("lerr").textContent="Wrong password"};
+$("loginBtn").onclick=()=>{if($("pw").value===PASSWORD){ADMIN_PW=$("pw").value;sessionStorage.setItem("binimran_admin","1");sessionStorage.setItem("binimran_pw",ADMIN_PW);enter()}else $("lerr").textContent="Wrong password"};
 $("pw").onkeydown=e=>{if(e.key==="Enter")$("loginBtn").click()};
-$("logout").onclick=()=>{sessionStorage.removeItem("binimran_admin");location.reload()};
-if(sessionStorage.getItem("binimran_admin"))enter();
+$("logout").onclick=()=>{sessionStorage.removeItem("binimran_admin");sessionStorage.removeItem("binimran_pw");location.reload()};
+if(sessionStorage.getItem("binimran_admin")){ADMIN_PW=sessionStorage.getItem("binimran_pw")||PASSWORD;enter()}
 
 /* tabs */
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
-  ["products","links","contact","pay","social","hero","theme","reviews","sheet","backup"].forEach(t=>$("t-"+t).classList.toggle("hide",t!==b.dataset.t));
+  ["products","links","contact","pay","social","hero","theme","reviews","orders","sheet","backup"].forEach(t=>$("t-"+t).classList.toggle("hide",t!==b.dataset.t));
+  if(b.dataset.t==="orders")loadOrders();
 });
 
 /* products */
@@ -335,6 +345,40 @@ $("addRev").onclick=()=>{readRev();data.reviews.push({name:"",stars:5,show:true,
 $("revAdm").onclick=e=>{const i=e.target.dataset.rdel;if(i!=null&&confirm("Ye review delete karein?")){readRev();data.reviews.splice(+i,1);renderRev()}};
 $("revAdm").onchange=()=>{readRev();$("revCount").textContent=data.reviews.filter(r=>r.show).length+" / "+data.reviews.length};
 $("saveRev").onclick=()=>{readRev();data.reviews=data.reviews.filter(r=>r.text);save();renderRev()};
+
+/* orders (from site checkout) */
+const ORD_STATUSES=["Pending","Confirmed","Shipped","Delivered","Cancelled"];
+function renderOrders(list){
+  const box=$("ordList");
+  if(!list||!list.length){box.innerHTML='<p style="color:var(--muted)">Koi order nahi mila.</p>';return}
+  box.innerHTML=list.map(o=>`<div class="pcard">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <div><b>${esc(o.id)}</b><br><small>${new Date(o.date).toLocaleString()}</small></div>
+      <div style="text-align:right"><b>Rs. ${Number(o.total||0).toLocaleString("en-PK")}</b><br><small>${esc(o.payment||"")}</small></div>
+    </div>
+    <p style="margin-top:8px"><b>${esc(o.name||"")}</b> · ${esc(o.phone||"")}</p>
+    <small style="color:var(--muted)">${esc(o.address||"")}${o.city?", "+esc(o.city):""}</small>
+    <ul style="margin:8px 0 10px 18px;font-size:13px;color:#fff">${(o.items||[]).map(i=>`<li>${esc(i.name)}${i.size?" ("+esc(i.size)+")":""} × ${i.qty}</li>`).join("")}</ul>
+    <select data-ost="${esc(o.id)}">${ORD_STATUSES.map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select>
+    <button class="btn alt" data-oupd="${esc(o.id)}" style="margin-top:8px">Update Status</button>
+  </div>`).join("")
+}
+function loadOrders(){
+  $("ordMsg").textContent="Loading…";
+  fetch("/api/orders",{headers:{"x-admin-password":ADMIN_PW}}).then(r=>r.json()).then(d=>{
+    if(d.error){$("ordMsg").textContent=d.error;renderOrders([]);return}
+    $("ordMsg").textContent=d.orders.length+" order(s)";
+    renderOrders(d.orders)
+  }).catch(()=>{$("ordMsg").textContent="Could not load orders (check internet / Cloudflare secret)."})
+}
+$("ordRefresh").onclick=loadOrders;
+$("ordList").addEventListener("click",e=>{
+  const id=e.target.dataset.oupd; if(!id)return;
+  const sel=document.querySelector(`select[data-ost="${CSS.escape(id)}"]`);
+  fetch("/api/orders/"+encodeURIComponent(id),{method:"PATCH",headers:{"content-type":"application/json","x-admin-password":ADMIN_PW},body:JSON.stringify({status:sel.value})})
+    .then(r=>r.json()).then(d=>{if(d.ok){toast("Status updated")}else{alert(d.error||"Failed")}})
+    .catch(()=>alert("Failed to update"))
+});
 
 /* orders sheet */
 const GS_CODE="// Bin Imran - orders to Google Sheet\n// Deploy as: Web app, Execute as \"Me\", Who has access \"Anyone\"\nvar HEAD = [\"Order ID\",\"Date\",\"Name\",\"Phone\",\"City\",\"Address\",\"Notes\",\"Payment\",\"Items\",\"Subtotal\",\"Delivery\",\"Total\",\"Status\"];\n\nfunction safe(v, n) {\n  v = String(v == null ? \"\" : v).slice(0, n || 300);\n  return /^[=+\\-@]/.test(v) ? \"'\" + v : v;   // stop spreadsheet formulas\n}\n\nfunction doPost(e) {\n  var lock = LockService.getScriptLock();\n  lock.waitLock(20000);\n  try {\n    var d = JSON.parse(e.postData.contents);\n    var ss = SpreadsheetApp.getActiveSpreadsheet();\n    var sh = ss.getSheetByName(\"Orders\") || ss.insertSheet(\"Orders\");\n    if (sh.getLastRow() === 0) {\n      sh.appendRow(HEAD);\n      sh.setFrozenRows(1);\n      sh.getRange(1, 1, 1, HEAD.length).setFontWeight(\"bold\");\n    }\n    sh.appendRow([safe(d.id,30), safe(d.date,40), safe(d.name,80), \"\", safe(d.city,60), safe(d.address,250),\n                  safe(d.notes,300), safe(d.payment,80), safe(d.items,900), Number(d.subtotal)||0,\n                  safe(d.delivery,40), Number(d.total)||0, \"Pending\"]);\n    var r = sh.getLastRow();\n    sh.getRange(r, 4).setNumberFormat(\"@\").setValue(safe(d.phone, 20));  // keep leading 0\n    return ContentService.createTextOutput(\"ok\");\n  } finally {\n    lock.release();\n  }\n}\n\nfunction doGet() {\n  return ContentService.createTextOutput(\"Bin Imran orders link is working\");\n}\n";
