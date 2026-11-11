@@ -103,17 +103,23 @@ function home() {
     </div>
   </div></section>
 
-  <section class="perks-sec2"><div class="wrap perks">
-    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></i><b>Premium Quality</b><small>Soft &amp; breathable fabrics</small></div>
-    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7.500" cy="17.500" r="1.800"/><circle cx="17.500" cy="17.500" r="1.800"/></svg></i><b>Free Delivery</b><small>Over ${rs(SITE.freeDeliveryOver)}</small></div>
-    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></i><b>Easy Exchange</b><small>Hassle-free</small></div>
-    <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.500" width="18" height="11" rx="2.500"/><circle cx="12" cy="12" r="2.500"/></svg></i><b>Cash on Delivery</b><small>Pay at your door</small></div>
-  </div></section>
-
-
   <section class="section" style="padding-top:0"><div class="wrap">
     <div class="sec-head"><div><h2>New Arrivals</h2><p>Fresh suits for every day</p></div><a class="link" href="#/shop/new">View All →</a></div>
     ${grid(nw)}
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div class="sec-head" style="justify-content:center;align-items:center;text-align:center;flex-direction:column"><p class="why-eyebrow">WHY BIN IMRAN</p><h2>Beautiful Suits You Can <i>Trust</i></h2></div>
+    <div class="why-grid">
+      <div class="why-card"><span class="why-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.500" width="18" height="11" rx="2.500"/><circle cx="12" cy="12" r="2.500"/></svg></span>
+        <h3>Cash on Delivery</h3><p>Pay when your parcel arrives at your door.</p></div>
+      <div class="why-card"><span class="why-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7.500" cy="17.500" r="1.800"/><circle cx="17.500" cy="17.500" r="1.800"/></svg></span>
+        <h3>Free Delivery</h3><p>Free on orders above ${rs(SITE.freeDeliveryOver)}, across Pakistan.</p></div>
+      <div class="why-card"><span class="why-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.400-7-10a4 4 0 0 1 7-2.600A4 4 0 0 1 19 11c0 5.600-7 10-7 10z"/><path d="M9 11h6M12 8v6"/></svg></span>
+        <h3>Easy Exchange</h3><p>Not the right fit or colour? Hassle-free exchange.</p><a class="why-link" href="#/help">Exchange policy →</a></div>
+      <div class="why-card"><span class="why-ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.550L3 21l2.050-5.350A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
+        <h3>WhatsApp Support</h3><p>Real people, quick replies, happy to help.</p><a class="why-link" target="_blank" rel="noopener" href="https://wa.me/${SITE.whatsapp}">Chat with us →</a></div>
+    </div>
   </div></section>
 
   <section class="section" style="padding-top:0"><div class="wrap">

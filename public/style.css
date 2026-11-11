@@ -465,3 +465,15 @@ table.size td{padding:11px;text-align:center;border-bottom:1px solid var(--line)
 .perks-sec2 .perks{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 10px;margin:0}
 @media(max-width:860px){.perks-sec2{padding:26px 0}.perks-sec2 .perks{grid-template-columns:repeat(2,1fr);gap:24px 0}}
 .hero:has(.hero-photo) .wrap{padding-bottom:40px}
+
+/* "Why Bin Imran" trust cards (below New Arrivals) */
+.why-eyebrow{letter-spacing:4px;font-size:12px;font-weight:600;color:var(--pink);margin-bottom:6px}
+.sec-head h2 i{font-style:italic;color:var(--pink);font-weight:500}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:30px}
+.why-card{background:#fff;border-radius:18px;padding:26px 22px;box-shadow:0 6px 24px rgba(26,8,19,.07)}
+.why-ic{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:14px;background:var(--tint2);color:var(--plum);margin-bottom:16px}
+.why-card h3{font-family:var(--serif);font-size:19px;color:var(--plum);font-weight:600;margin-bottom:6px}
+.why-card p{font-size:13.5px;color:var(--muted);line-height:1.5}
+.why-link{display:inline-block;margin-top:10px;font-size:13.5px;font-weight:600;color:var(--pink)}
+.why-link:hover{text-decoration:underline}
+@media(max-width:860px){.why-grid{grid-template-columns:1fr 1fr;gap:14px}.why-card{padding:20px 16px}}
