@@ -110,7 +110,6 @@ function home() {
     <div><i><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.500" width="18" height="11" rx="2.500"/><circle cx="12" cy="12" r="2.500"/></svg></i><b>Cash on Delivery</b><small>Pay at your door</small></div>
   </div></section>
 
-  <section class="kwband"><div class="kwtrack">${[...KEYWORDS, ...KEYWORDS].map(k => `<span>${k}</span>`).join('')}</div></section>
 
   <section class="section" style="padding-top:0"><div class="wrap">
     <div class="sec-head"><div><h2>New Arrivals</h2><p>Fresh suits for every day</p></div><a class="link" href="#/shop/new">View All →</a></div>
@@ -390,7 +389,8 @@ $('#searchForm').addEventListener('submit', e => {
   $('#waFloat').href = 'https://wa.me/' + SITE.whatsapp + (SITE.waMessage ? '?text=' + encodeURIComponent(SITE.waMessage) : '');
   if (SITE.nav) $('#menu').innerHTML = SITE.nav.map(n => `<a href="${n.url}"${n.label === 'Sale' ? ' class="hot"' : ''}>${n.label}</a>`).join('');
   $('#catbar').innerHTML = '<a href="#/">Home</a>' + $('#menu').innerHTML;
-  $('#topMsg').innerHTML = ['Free Delivery on Orders Over ' + rs(SITE.freeDeliveryOver), 'Easy Exchange', 'Cash on Delivery'].map(m => `<span>${m}</span>`).join('');
+  const topMsgs = ['Free Delivery on Orders Over ' + rs(SITE.freeDeliveryOver), 'Easy Exchange', 'Cash on Delivery', ...KEYWORDS];
+  $('#topMsg').innerHTML = [...topMsgs, ...topMsgs].map(m => `<span>${m}</span>`).join('');
   if (SITE.address) $('#fAddress').textContent = '📍 ' + SITE.address;
   const so = SITE.social || {};
   $('#fSocial').innerHTML = [['facebook', 'Facebook'], ['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['youtube', 'YouTube']].filter(([k]) => so[k]).map(([k, l]) => `<a href="${so[k]}" target="_blank" rel="noopener">${l}</a>`).join('');

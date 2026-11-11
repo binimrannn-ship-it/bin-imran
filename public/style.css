@@ -385,7 +385,10 @@ table.size td{padding:11px;text-align:center;border-bottom:1px solid var(--line)
 .hero:has(.hero-photo) .perks{background:rgba(255,255,255,.8)}
 
 /* ===== HEADER v3: logo left | search + menu centre | icons right ===== */
-.topmsg{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;padding:9px 5%;background:var(--tint2);color:var(--plum);font-size:13px;letter-spacing:1px}
+.topmsg{background:var(--plum);color:#fff;overflow:hidden;white-space:nowrap;padding:10px 0}
+.topmsg-track{display:inline-flex;gap:0;animation:kwscroll 28s linear infinite}
+.topmsg-track span{flex-shrink:0;padding:0 22px;font-size:12.5px;letter-spacing:1.5px;text-transform:uppercase;position:relative}
+.topmsg-track span::after{content:"✦";position:absolute;right:-1px;color:var(--gold);font-size:10px}
 .header{grid-template-columns:auto 1fr auto;gap:28px;padding:14px 5% 0}
 .header .logo{align-items:flex-start;text-align:left;padding-bottom:14px}
 .header .logo b{font-size:32px}
@@ -417,7 +420,7 @@ table.size td{padding:11px;text-align:center;border-bottom:1px solid var(--line)
   .searchbar{display:none}.searchbar.open{display:flex;margin:0 0 8px}
   .catbar{justify-content:flex-start;overflow-x:auto;margin:0 -3%;padding:0 3%}
   .catbar a{padding:10px 12px;font-size:13px}
-  .topmsg{gap:6px 18px;font-size:11px;padding:7px 3%}
+  .topmsg{padding:8px 0}.topmsg-track span{padding:0 16px;font-size:11px}
 }
 /* hero heading: script + bold */
 .hero h1{font-family:var(--serif);font-weight:700;line-height:1.05}
