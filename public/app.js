@@ -403,6 +403,8 @@ $('#searchForm').addEventListener('submit', e => {
   if (SITE.pay && SITE.pay.length) $('#fPay').innerHTML = SITE.pay.map(m => '💳 ' + m.name).join('<br>');
   updateCounts();
   route();
+  const splash = $('#splash');
+  if (splash) requestAnimationFrame(() => { splash.classList.add('hide'); setTimeout(() => splash.remove(), 500); });
 })();
 
 /* ---------- Header: menu drawer + search bar ---------- */
