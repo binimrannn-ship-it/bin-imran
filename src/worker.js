@@ -77,6 +77,21 @@ export default {
       return out({ ok: true, count: list.length });
     }
 
+    if (path === '/api/config') {
+      if (req.method === 'GET') {
+        return new Response((await env.STORE.get('config')) || 'null', { headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
+      }
+      if (req.method !== 'POST') return out({ error: 'Method not allowed' }, 405);
+      if (!env.ADMIN_PASSWORD) return out({ error: 'ADMIN_PASSWORD is not set in Cloudflare' }, 500);
+      if (!checkAdmin(req, env)) return out({ error: 'Wrong password' }, 401);
+      let body; try { body = await req.text(); } catch { return out({ error: 'Bad data' }, 400); }
+      if (!body || body.length > 4_000_000) return out({ error: 'Data too large or empty' }, 400);
+      let parsed; try { parsed = JSON.parse(body); } catch { return out({ error: 'Not valid JSON' }, 400); }
+      if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.products)) return out({ error: 'Config must include a products array' }, 400);
+      await env.STORE.put('config', body);
+      return out({ ok: true });
+    }
+
     if (path === '/api/login') {
       if (req.method !== 'POST') return out({ error: 'Method not allowed' }, 405);
       if (!env.ADMIN_PASSWORD) return out({ error: 'ADMIN_PASSWORD is not set in Cloudflare' }, 500);

@@ -32,6 +32,7 @@ const Site = (() => {
     applyTheme(THEME);
     let d = null;
     try { if (/preview=1/.test(location.search)) d = JSON.parse(localStorage.getItem('binimran_data')); } catch (e) {}
+    if (!d) try { const r = await fetch('/api/config?' + Date.now()); if (r.ok) d = await r.json(); } catch (e) {}
     if (!d) try { const r = await fetch('data.json?' + Date.now()); if (r.ok) d = await r.json(); } catch (e) {}
     if (d && d.products) merge(d);
   }

@@ -68,10 +68,10 @@ b{color:#fff}
 <!-- Panel -->
 <div id="panel" class="hide">
   <div class="top"><b>Bin Imran – Admin</b><span><a id="sheetTop" href="#" target="_blank" class="hide">📊 Orders Sheet</a><a href="index.html?preview=1" target="_blank">Preview my changes</a><button id="logout">Logout</button></span></div>
-  <div id="publishBanner" style="background:#5a2a12;border-bottom:2px solid #e0b552;color:#ffe6c7;padding:12px 20px;font-size:13px;line-height:1.7">
-    ⚠️ <b>Yahan jo bhi change karein, wo abhi sirf ISI browser mein save hota hai — live website par KHUD nazar nahi aata.</b><br>
-    Sab visitors ko dikhane ke liye: <b>1)</b> yahan Save/Update dabayein → <b>2)</b> neeche <b>“Save / Backup”</b> tab mein jayein → <b>3)</b> <b>“Download data.json”</b> dabayein → <b>4)</b> wo file GitHub par <code>public/data.json</code> ki jagah upload karein (ya push karne wala Colab cell chalayein). Jab tak ye 4 steps na karein, badlav sirf is screen par rahenge.
-    <button id="goBackup" style="margin-top:8px">Save / Backup tab kholein</button>
+  <div id="publishBanner" style="background:#1f4d2f;border-bottom:2px solid #6fcf97;color:#dff5e6;padding:10px 20px;font-size:13px;line-height:1.6">
+    ✅ <b>Ab har Save/Update dabate hi, badlav seedha live website par chala jata hai</b> (10–20 second lag sakte hain).
+    <span id="pubStatus" style="display:block;margin-top:4px;font-weight:600;color:#dff5e6">Abhi tak kuch save nahi kiya.</span>
+    <span style="display:block;margin-top:6px;color:#bfe6cc">Backup ke liye <b>Save / Backup</b> tab se <b>Download data.json</b> ab bhi kar sakte hain, lekin zaroori nahi.</span>
   </div>
   <div class="box">
     <div class="tabs">
@@ -208,14 +208,14 @@ b{color:#fff}
       <button class="btn" id="saveSheet">Save</button>
       <button class="btn alt" id="testSheet">Send test order</button>
       <a class="btn alt" id="openSheet" href="#" target="_blank" style="display:inline-block;text-decoration:none">📊 Open Orders Sheet</a>
-      <p style="color:var(--muted);font-size:12px;line-height:1.6;margin-top:10px">Save ke baad Backup tab se <b>data.json</b> download karke GitHub par upload karna na bhoolein, warna website par orders sheet mein nahi jayen ge. Sheet ko private rakhein, kisi ke saath share na karein.</p>
+      <p style="color:var(--muted);font-size:12px;line-height:1.6;margin-top:10px">Sheet URL yahan save karke button dabayein — ab ye seedha website par live ho jata hai (upar status dekhein). Sheet ko private rakhein, kisi ke saath share na karein.</p>
     </section>
 
     <section id="t-theme" class="card hide"><h2>Theme Colours</h2><p style="color:var(--muted);font-size:12px">Ready-made theme chunein ya apne rang banayein. Save ke baad “Preview my changes” se dekhein.</p><div id="thPre" style="margin:10px 0"></div><div id="thCols"></div><button class="btn" id="saveTheme">Save</button></section>
 
     <section id="t-backup" class="card hide">
       <h2>Save to GitHub / Backup</h2>
-      <p style="line-height:1.7;color:var(--muted)">Admin mein jo bhi badlein wo sirf <b>is browser</b> mein save hota hai. Sab visitors ko dikhane ke liye:<br><b>1.</b> Neeche <b>Download data.json</b> dabayein.<br><b>2.</b> GitHub repo kholein (jahan index.html hai).<br><b>3.</b> Purani data.json ki jagah yeh nayi file upload karein.<br><b>4.</b> Photos hamesha <b>images</b> folder mein upload karein.</p>
+      <p style="line-height:1.7;color:var(--muted)">Admin mein jo bhi badlein, Save dabate hi wo website par live ho jata hai — upar hare banner mein status dikhta hai. Ye yahan sirf ek <b>backup</b> hai, agar kabhi dobara is admin mein data load karna ho (jaise naye browser/computer mein) to: <br><b>1.</b> Neeche <b>Download data.json</b> dabayein aur file sambhal kar rakhein.<br><b>2.</b> Zaroorat parne par <b>Import data.json</b> se wapas load kar sakte hain.</p>
       <button class="btn" id="dl">Download data.json</button>
       <label style="margin-top:18px">Import data.json</label>
       <input type="file" id="imp" accept="application/json">
@@ -235,7 +235,24 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 function toast(t){const m=$("msg");m.textContent=t;m.classList.add("show");setTimeout(()=>m.classList.remove("show"),1800)}
 function load(){try{data=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!data||!data.products){data=JSON.parse(JSON.stringify(DEFAULT));fetch("data.json").then(r=>r.json()).then(d=>{if(d&&d.products){data=d;fillNew();render()}}).catch(()=>{})}fillNew();if(!data.social)data.social=JSON.parse(JSON.stringify(DEFAULT.social));if(data.hero==null)data.hero="";if(!data.payments)data.payments=[{name:"Cash on Delivery",on:true,details:""},{name:"Easypaisa",on:false,details:""},{name:"JazzCash",on:false,details:""},{name:"Bank Transfer",on:false,details:""}]}
 function fillNew(){if(!data.reviews)data.reviews=JSON.parse(JSON.stringify(DEFAULT.reviews));if(!data.heroCfg)data.heroCfg={};if(!data.sheet)data.sheet={url:"",link:""};if(!data.theme)data.theme=JSON.parse(JSON.stringify(DEFAULT.theme))}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(data));toast("Saved")}catch(e){alert("Storage full. Use smaller images or image paths (images/...) instead of uploads.")}}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert("Storage full. Use smaller images or image paths (images/...) instead of uploads.");return}
+  toast("Saving…");
+  publish();
+}
+let publishTimer=null;
+function publish(){
+  clearTimeout(publishTimer);
+  publishTimer=setTimeout(()=>{
+    fetch("/api/config",{method:"POST",headers:{"content-type":"application/json","x-admin-password":ADMIN_PW},body:JSON.stringify(data)})
+      .then(r=>r.json().catch(()=>({error:"Server se jawab nahi mila (status "+r.status+")"})))
+      .then(j=>{
+        if(j&&j.ok){$("pubStatus").textContent="✅ Website par live ho gaya ("+new Date().toLocaleTimeString()+")";$("pubStatus").style.color="#8fe3a0"}
+        else{$("pubStatus").textContent="⚠️ Live nahi ho saka: "+((j&&j.error)||"Unknown error");$("pubStatus").style.color="#ffb3b3"}
+      })
+      .catch(e=>{$("pubStatus").textContent="⚠️ Internet/connection check karein: "+e.message;$("pubStatus").style.color="#ffb3b3"});
+  },400);
+}
 
 /* login */
 function enter(){$("login").classList.add("hide");$("panel").classList.remove("hide");load();render()}
@@ -250,7 +267,6 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   ["products","links","contact","pay","social","hero","theme","reviews","orders","sheet","backup"].forEach(t=>$("t-"+t).classList.toggle("hide",t!==b.dataset.t));
   if(b.dataset.t==="orders")loadOrders();
 });
-$("goBackup").onclick=()=>document.querySelector('.tabs button[data-t="backup"]').click();
 
 /* products */
 function resize(file,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,600/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*s;c.height=i.height*s;c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.8))};i.src=r.result};r.readAsDataURL(file)}
