@@ -68,6 +68,11 @@ b{color:#fff}
 <!-- Panel -->
 <div id="panel" class="hide">
   <div class="top"><b>Bin Imran – Admin</b><span><a id="sheetTop" href="#" target="_blank" class="hide">📊 Orders Sheet</a><a href="index.html?preview=1" target="_blank">Preview my changes</a><button id="logout">Logout</button></span></div>
+  <div id="publishBanner" style="background:#5a2a12;border-bottom:2px solid #e0b552;color:#ffe6c7;padding:12px 20px;font-size:13px;line-height:1.7">
+    ⚠️ <b>Yahan jo bhi change karein, wo abhi sirf ISI browser mein save hota hai — live website par KHUD nazar nahi aata.</b><br>
+    Sab visitors ko dikhane ke liye: <b>1)</b> yahan Save/Update dabayein → <b>2)</b> neeche <b>“Save / Backup”</b> tab mein jayein → <b>3)</b> <b>“Download data.json”</b> dabayein → <b>4)</b> wo file GitHub par <code>public/data.json</code> ki jagah upload karein (ya push karne wala Colab cell chalayein). Jab tak ye 4 steps na karein, badlav sirf is screen par rahenge.
+    <button id="goBackup" style="margin-top:8px">Save / Backup tab kholein</button>
+  </div>
   <div class="box">
     <div class="tabs">
       <button data-t="products" class="on">Products</button>
@@ -245,6 +250,7 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   ["products","links","contact","pay","social","hero","theme","reviews","orders","sheet","backup"].forEach(t=>$("t-"+t).classList.toggle("hide",t!==b.dataset.t));
   if(b.dataset.t==="orders")loadOrders();
 });
+$("goBackup").onclick=()=>document.querySelector('.tabs button[data-t="backup"]').click();
 
 /* products */
 function resize(file,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const s=Math.min(1,600/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*s;c.height=i.height*s;c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.8))};i.src=r.result};r.readAsDataURL(file)}
