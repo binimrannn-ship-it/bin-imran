@@ -34,6 +34,7 @@ function cleanOrder(o) {
   const phone = digits(o.phone).slice(0, 15);
   const address = String(o.address || '').trim().slice(0, 300);
   const city = String(o.city || '').trim().slice(0, 60);
+  const postal = String(o.postal || '').trim().slice(0, 20);
   const payment = String(o.payment || '').trim().slice(0, 40);
   if (!name || phone.length < 7 || !address) return null;
   const items = Array.isArray(o.items) ? o.items.slice(0, 50).map(i => ({
@@ -46,7 +47,7 @@ function cleanOrder(o) {
   const total = num(o.total);
   if (total === null) return null;
   const id = typeof o.id === 'string' && ORDER_ID.test(o.id) ? o.id : genId();
-  return { id, name, phone, address, city, payment, items, total };
+  return { id, name, phone, address, city, postal, payment, items, total };
 }
 
 async function pushIndex(env, id) {

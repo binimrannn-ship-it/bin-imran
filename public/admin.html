@@ -379,7 +379,7 @@ function renderOrders(list){
       <div style="text-align:right"><b>Rs. ${Number(o.total||0).toLocaleString("en-PK")}</b><br><small>${esc(o.payment||"")}</small></div>
     </div>
     <p style="margin-top:8px"><b>${esc(o.name||"")}</b> · ${esc(o.phone||"")}</p>
-    <small style="color:var(--muted)">${esc(o.address||"")}${o.city?", "+esc(o.city):""}</small>
+    <small style="color:var(--muted)">${esc(o.address||"")}${o.city?", "+esc(o.city):""}${o.postal?" - "+esc(o.postal):""}</small>
     <ul style="margin:8px 0 10px 18px;font-size:13px;color:#fff">${(o.items||[]).map(i=>`<li>${esc(i.name)}${i.size?" ("+esc(i.size)+")":""} × ${i.qty}</li>`).join("")}</ul>
     <select data-ost="${esc(o.id)}">${ORD_STATUSES.map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select>
     <button class="btn alt" data-oupd="${esc(o.id)}" style="margin-top:8px">Update Status</button>

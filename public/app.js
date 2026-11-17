@@ -46,6 +46,11 @@ function addToCart(id, size = 'M', qty = 1) {
   if (f) f.qty += qty; else cart.push({ id, size, qty });
   save(); toast('Added to cart 🛍');
 }
+function buyNow(id, size = 'M', qty = 1) {
+  cart = [{ id, size, qty }];
+  save();
+  location.hash = '#/cart';
+}
 function toggleWish(id) {
   const i = wish.indexOf(id);
   if (i > -1) { wish.splice(i, 1); toast('Removed from wishlist'); }
@@ -64,7 +69,10 @@ function card(p) {
       <small>${p.cat}</small>
       <h3><a href="#/product/${p.id}">${p.name}</a></h3>
       <div class="price">${rs(p.price)}${isSale(p) ? `<s>${rs(p.oldPrice)}</s>` : ''}</div>
-      <button class="add" data-add="${p.id}">Add to Cart</button>
+      <div class="card-btns">
+        <button class="add" data-add="${p.id}">Add to Cart</button>
+        <button class="buy" data-buy="${p.id}">Buy Now</button>
+      </div>
     </div>
   </article>`;
 }
@@ -80,8 +88,7 @@ const payList = () => SITE.pay && SITE.pay.length ? SITE.pay : [{ name: 'Cash on
 const paySel = () => `<select id="cPay">${payList().map(m => `<option>${m.name}</option>`).join('')}</select>`;
 const payNote = () => `<p class="note">${payList().map(m => (m.name === 'Cash on Delivery' ? '💵 ' : '💳 ') + m.name + (m.details ? ': ' + m.details : '')).join('<br>')}<br>We will confirm your order on WhatsApp.</p>`;
 function home() {
-  const nw = PRODUCTS.filter(p => p.isNew).slice(0, 4);
-  const sale = PRODUCTS.filter(isSale).slice(0, 4);
+  const nw = [...PRODUCTS].sort((a, b) => b.id - a.id).slice(0, 8);
   return `
   <section class="hero"${heroStyle()}>${SITE.heroImg ? '' : '<div class="hero-photo" aria-hidden="true"></div>'}<div class="wrap">
     <div class="hero-copy">
@@ -173,6 +180,7 @@ function product(id) {
         <div class="sizes" id="sizes">${['S', 'M', 'L', 'XL'].map(s => `<button class="${s === 'M' ? 'on' : ''}" data-size="${s}">${s}</button>`).join('')}</div>
         <div class="btn-row">
           <button class="btn" id="addDetail" data-id="${p.id}">Add to Cart</button>
+          <button class="btn dark" id="buyDetail" data-id="${p.id}">Buy Now</button>
           <button class="btn ghost" data-wish="${p.id}">${wish.includes(p.id) ? '♥ Saved' : '♡ Wishlist'}</button>
           <a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent('Hello Bin Imran, I want to order: ' + p.name + ' (' + rs(p.price) + ')')}">Order on WhatsApp</a>
         </div>
@@ -209,6 +217,7 @@ function cartPage() {
       <input id="cPhone" placeholder="Phone number" inputmode="tel">
       <select id="cCity">${CITIES.map(c => `<option${c === 'Rawalpindi' ? ' selected' : ''}>${c}</option>`).join('')}</select>
       <textarea id="cAddr" rows="3" placeholder="Full delivery address (house #, street, area)"></textarea>
+      <input id="cPostal" placeholder="Postal code (optional)">
       ${paySel()}<button class="btn wa block" id="checkout">Place Order</button>
       ${payNote()}
     </aside>
@@ -217,18 +226,18 @@ function cartPage() {
 function orderWaLink(o) {
   let msg = `Hello Bin Imran! I want to place an order (Order ID: ${o.id}):\n\n`;
   o.items.forEach((i, n) => { msg += `${n + 1}. ${i.name} (Size ${i.size}) x${i.qty} = ${rs(i.price * i.qty)}\n`; });
-  msg += `\nSubtotal: ${rs(o.sub)}\nDelivery: ${o.ship ? rs(o.ship) : 'Free'}\nTotal: ${rs(o.total)}\n\nName: ${o.name}\nPhone: ${o.phone}\nCity: ${o.city}\nAddress: ${o.address}\nPayment: ${o.payment}`;
+  msg += `\nSubtotal: ${rs(o.sub)}\nDelivery: ${o.ship ? rs(o.ship) : 'Free'}\nTotal: ${rs(o.total)}\n\nName: ${o.name}\nPhone: ${o.phone}\nCity: ${o.city}\nAddress: ${o.address}${o.postal ? '\nPostal Code: ' + o.postal : ''}\nPayment: ${o.payment}`;
   return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(msg)}`;
 }
 function checkout() {
-  const name = $('#cName').value.trim(), phone = $('#cPhone').value.trim(), city = ($('#cCity') || {}).value || '', addr = $('#cAddr').value.trim();
+  const name = $('#cName').value.trim(), phone = $('#cPhone').value.trim(), city = ($('#cCity') || {}).value || '', addr = $('#cAddr').value.trim(), postal = ($('#cPostal') || {}).value?.trim() || '';
   if (!name || !phone || !addr) { toast('Please fill name, phone and address'); return; }
   const { items, sub, ship, total } = calc();
   const pay = ($('#cPay') || {}).value || 'Cash on Delivery';
   const orderId = 'BI' + Date.now().toString(36).toUpperCase();
-  const order = { id: orderId, name, phone, city, address: addr, payment: pay, items: items.map(i => ({ name: i.p.name, size: i.size, qty: i.qty, price: i.p.price })), sub, ship, total };
-  fetch('/api/orders', { method: 'POST', keepalive: true, headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: orderId, name, phone, city, address: addr, payment: pay, items: order.items, total }) }).catch(() => {});
-  if (SITE.sheet) fetch(SITE.sheet, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ id: orderId, date: new Date().toLocaleString('en-GB'), name, phone, city, address: addr, notes: '', payment: pay, items: items.map(i => `${i.p.name} (${i.size}) x${i.qty}`).join('; '), subtotal: sub, delivery: ship ? ship : 'Free', total }) }).catch(() => {});
+  const order = { id: orderId, name, phone, city, address: addr, postal, payment: pay, items: items.map(i => ({ name: i.p.name, size: i.size, qty: i.qty, price: i.p.price })), sub, ship, total };
+  fetch('/api/orders', { method: 'POST', keepalive: true, headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: orderId, name, phone, city, address: addr, postal, payment: pay, items: order.items, total }) }).catch(() => {});
+  if (SITE.sheet) fetch(SITE.sheet, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ id: orderId, date: new Date().toLocaleString('en-GB'), name, phone, city, address: addr, postal, notes: '', payment: pay, items: items.map(i => `${i.p.name} (${i.size}) x${i.qty}`).join('; '), subtotal: sub, delivery: ship ? ship : 'Free', total }) }).catch(() => {});
   store.set('bi_last_order', order);
   cart = []; save();
   location.hash = '#/order/' + orderId;
@@ -247,6 +256,7 @@ function orderConfirm(id) {
         <p><b>Order ID:</b> ${o.id}</p>
         <p><b>Name:</b> ${o.name}</p>
         <p><b>City:</b> ${o.city || '-'}</p>
+        ${o.postal ? `<p><b>Postal Code:</b> ${o.postal}</p>` : ''}
         <p><b>Payment:</b> ${o.payment}</p>
         <p style="margin-top:8px"><b>Total: ${rs(o.total)}</b></p>
       </div>
@@ -360,9 +370,11 @@ document.addEventListener('click', e => {
   const t = e.target.closest('button');
   if (!t) return;
   if (t.dataset.add) addToCart(+t.dataset.add);
+  else if (t.dataset.buy) buyNow(+t.dataset.buy);
   else if (t.dataset.wish) { toggleWish(+t.dataset.wish); if (location.hash.startsWith('#/wishlist') || location.hash.startsWith('#/product')) route(); else document.querySelectorAll(`[data-wish="${t.dataset.wish}"]`).forEach(b => { if (b.classList.contains('heart')) b.textContent = wish.includes(+t.dataset.wish) ? '♥' : '♡'; }); }
   else if (t.dataset.size) { document.querySelectorAll('#sizes button').forEach(b => b.classList.remove('on')); t.classList.add('on'); }
   else if (t.id === 'addDetail') { const s = $('#sizes .on'); addToCart(+t.dataset.id, s ? s.dataset.size : 'M'); }
+  else if (t.id === 'buyDetail') { const s = $('#sizes .on'); buyNow(+t.dataset.id, s ? s.dataset.size : 'M'); }
   else if (t.dataset.q) { const i = cart[+t.dataset.q]; i.qty += +t.dataset.d; if (i.qty < 1) cart.splice(+t.dataset.q, 1); save(); route(); }
   else if (t.dataset.rm) { cart.splice(+t.dataset.rm, 1); save(); route(); }
   else if (t.id === 'checkout') checkout();

@@ -98,8 +98,11 @@ main{min-height:60vh}
 .info h3{font-size:15px;font-weight:500;margin:2px 0 6px;color:var(--plum);line-height:1.35}
 .price{font-weight:600;color:var(--pink)}
 .price s{color:#aaa;font-weight:400;font-size:13px;margin-left:6px}
-.add{margin-top:12px;width:100%;background:var(--plum);color:#fff;padding:10px;border-radius:30px;font-size:13px;transition:.25s}
+.card-btns{display:flex;gap:8px;margin-top:12px}
+.add{flex:1;width:100%;background:var(--plum);color:#fff;padding:10px;border-radius:30px;font-size:13px;transition:.25s}
 .add:hover{background:var(--pink)}
+.buy{flex:1;width:100%;background:#fff;color:var(--plum);border:1.5px solid var(--plum);padding:9px 10px;border-radius:30px;font-size:13px;font-weight:500;transition:.25s}
+.buy:hover{background:var(--tint)}
 
 /* Promo banners */
 .promos{display:grid;grid-template-columns:1fr 1fr;gap:22px}
