@@ -41,14 +41,19 @@ function updateCounts() {
   cc.textContent = c; cc.hidden = !c;
   wc.textContent = wish.length; wc.hidden = !wish.length;
 }
+function pixel(event, data) { try { if (typeof fbq === 'function') fbq('track', event, data || {}); } catch (e) {} }
 function addToCart(id, size = 'M', qty = 1) {
   const f = cart.find(i => i.id === id && i.size === size);
   if (f) f.qty += qty; else cart.push({ id, size, qty });
   save(); toast('Added to cart 🛍');
+  const p = PRODUCTS.find(x => x.id === id);
+  if (p) pixel('AddToCart', { content_name: p.name, content_ids: [p.id], content_type: 'product', value: p.price * qty, currency: 'PKR' });
 }
 function buyNow(id, size = 'M', qty = 1) {
   cart = [{ id, size, qty }];
   save();
+  const p = PRODUCTS.find(x => x.id === id);
+  if (p) pixel('AddToCart', { content_name: p.name, content_ids: [p.id], content_type: 'product', value: p.price * qty, currency: 'PKR' });
   location.hash = '#/cart';
 }
 function toggleWish(id) {
@@ -238,6 +243,7 @@ function checkout() {
   const order = { id: orderId, name, phone, city, address: addr, postal, payment: pay, items: items.map(i => ({ name: i.p.name, size: i.size, qty: i.qty, price: i.p.price })), sub, ship, total };
   fetch('/api/orders', { method: 'POST', keepalive: true, headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: orderId, name, phone, city, address: addr, postal, payment: pay, items: order.items, total }) }).catch(() => {});
   if (SITE.sheet) fetch(SITE.sheet, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ id: orderId, date: new Date().toLocaleString('en-GB'), name, phone, city, address: addr, postal, notes: '', payment: pay, items: items.map(i => `${i.p.name} (${i.size}) x${i.qty}`).join('; '), subtotal: sub, delivery: ship ? ship : 'Free', total }) }).catch(() => {});
+  pixel('Purchase', { content_ids: items.map(i => i.p.id), content_type: 'product', num_items: items.reduce((n, i) => n + i.qty, 0), value: total, currency: 'PKR' });
   store.set('bi_last_order', order);
   cart = []; save();
   location.hash = '#/order/' + orderId;
