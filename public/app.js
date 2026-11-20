@@ -344,21 +344,26 @@ function help() {
 }
 
 /* ---------- Router ---------- */
+const DEF_TITLE = document.title;
+function setTitle(t, desc) {
+  document.title = t ? t + ' – Bin Imran' : DEF_TITLE;
+  if (desc) { const m = $('#metaDesc'); if (m) m.setAttribute('content', desc); }
+}
 function route() {
   const h = decodeURIComponent(location.hash.slice(1) || '/');
   const parts = h.split('/').filter(Boolean);
   let html;
-  if (!parts.length) html = home();
-  else if (parts[0] === 'shop') html = shop(parts[1]);
-  else if (parts[0] === 'search') html = shop(null, parts.slice(1).join('/'));
-  else if (parts[0] === 'product') html = product(parts[1]);
-  else if (parts[0] === 'cart') html = cartPage();
-  else if (parts[0] === 'wishlist') html = wishPage();
-  else if (parts[0] === 'account') html = account();
-  else if (parts[0] === 'help') html = help();
-  else if (parts[0] === 'track') html = trackPage(parts[1]);
-  else if (parts[0] === 'order') html = orderConfirm(parts[1]);
-  else html = home();
+  if (!parts.length) { html = home(); setTitle(null); }
+  else if (parts[0] === 'shop') { html = shop(parts[1]); setTitle(parts[1] ? parts[1] + ' Suits' : 'All Suits'); }
+  else if (parts[0] === 'search') { html = shop(null, parts.slice(1).join('/')); setTitle('Search: ' + parts.slice(1).join('/')); }
+  else if (parts[0] === 'product') { html = product(parts[1]); const p = PRODUCTS.find(x => x.id === +parts[1]); if (p) setTitle(p.name, p.desc || undefined); }
+  else if (parts[0] === 'cart') { html = cartPage(); setTitle('Your Cart'); }
+  else if (parts[0] === 'wishlist') { html = wishPage(); setTitle('Wishlist'); }
+  else if (parts[0] === 'account') { html = account(); setTitle('My Account'); }
+  else if (parts[0] === 'help') { html = help(); setTitle('Help & Size Guide'); }
+  else if (parts[0] === 'track') { html = trackPage(parts[1]); setTitle('Track Your Order'); }
+  else if (parts[0] === 'order') { html = orderConfirm(parts[1]); setTitle('Order Placed'); }
+  else { html = home(); setTitle(null); }
   app.innerHTML = html;
   window.scrollTo({ top: 0 });
   document.querySelectorAll('#menu a, #catbar a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + h));

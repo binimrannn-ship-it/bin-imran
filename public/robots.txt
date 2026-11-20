@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bin-imran.binimrannn.workers.dev/sitemap.xml
